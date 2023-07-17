@@ -66,13 +66,13 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
                                 variant="subtitle2"
                                 sx={{ color: "text.primary" }}
                             >
-                                KAREEM
+                                كريم
                             </Typography>
                             <Typography
                                 variant="body2"
                                 sx={{ color: "text.secondary" }}
                             >
-                                KAREEM-DOCTOR
+                                الطبيب كريم
                             </Typography>
                         </Box>
                     </AccountStyle>

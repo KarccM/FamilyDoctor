@@ -1,6 +1,8 @@
 import * as React from "react";
 import { Link, createBrowserRouter } from "react-router-dom";
 import DashboardLayout from "./layouts/dashboard";
+import AddSymptom from "./screens/symptoms/add";
+import EditSymptom from "./screens/symptoms/edit";
 
 
 const useRouter = () => {
@@ -15,9 +17,9 @@ const useRouter = () => {
                 },
                 children: [
                     {
-                        path: "sick",
+                        path: "diseases",
                         handle: {
-                            crumb: () => <Link to="/sick">الامراض</Link>,
+                            crumb: () => <Link to="/diseases">الامراض</Link>,
                         },
                         children: [
                             { index: true, element: <>الامراض</> },
@@ -45,6 +47,42 @@ const useRouter = () => {
                                 handle: {
                                     crumb: () => (
                                         <Link to="/:id">تفاصيل المرض</Link>
+                                    ),
+                                },
+                            },
+                        ],
+                    },
+                    {
+                        path: "symptoms",
+                        handle: {
+                            crumb: () => <Link to="/symptoms">الاعراض</Link>,
+                        },
+                        children: [
+                            { index: true, element: <>الاعراض</> },
+                            {
+                                path: "add",
+                                element: <AddSymptom />,
+                                handle: {
+                                    crumb: () => (
+                                        <Link to="/add">عرض جديد</Link>
+                                    ),
+                                },
+                            },
+                            {
+                                path: ":id/edit",
+                                element: <EditSymptom />,
+                                handle: {
+                                    crumb: () => (
+                                        <Link to="/:id/edit">تعديل العرض</Link>
+                                    ),
+                                },
+                            },
+                            {
+                                path: ':id',
+                                element: <>تفاصيل العرض</>,
+                                handle: {
+                                    crumb: () => (
+                                        <Link to="/:id">تفاصيل العرض</Link>
                                     ),
                                 },
                             },
