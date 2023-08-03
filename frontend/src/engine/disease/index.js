@@ -61,9 +61,9 @@ class Disease {
         this.rules = this.rules.filter(r => r.valid)
     }
 
-    compareFunction(a, b) { return b - a }
+    compareFunction(a, b,order) { return order === 'des' ? b - a: a - b }
 
-    topNSymptoms(n = 1) {
+    mostCommonSymptoms(n = 1) {
         let prominantSymptoms = {}
         this.rules.forEach((rule) => {
             rule.symptoms.forEach((symptom) => {
@@ -77,8 +77,16 @@ class Disease {
         })
         // eslint-disable-next-line no-unused-vars
         let sortedSymptoms = Object.entries(prominantSymptoms).map(([_, value]) => ({ ...value }));
-        sortedSymptoms.sort((symptomA, symptomB) => this.compareFunction(symptomA.value, symptomB.value))
+        sortedSymptoms.sort((symptomA, symptomB) => this.compareFunction(symptomA.value, symptomB.value,'des'))
         return sortedSymptoms.slice(0, n);
+    }
+    
+    generateScore(){
+        return this.max() + this.priority;
+    }
+
+    max(){
+        return this.rules.sort((a,b) =>this.compareFunction(a.weight,b.weight,'ase'))[0];
     }
 
 }
@@ -91,7 +99,6 @@ class Node {
     // tried
     constructor(disease) {
         this.disease = disease;
-        this.score = this.disease.priority;
         this.tried = false;
     }
 
@@ -101,8 +108,12 @@ class Node {
         console.log('this.tried :>> ', this.tried);
     }
 
+    score(){
+        return this.disease.generateScore();
+    }
+
     topSymptom() {
-        return this.disease.topNSymptoms();
+        return this.disease.mostCommonSymptoms();
     }
 
     updateRules(visitedSymptom) {
