@@ -19,19 +19,19 @@ class Rule {
     }
 
     updateRule(visitedSymptom) {
-        let symptom = this.symptoms.find((e) => visitedSymptom.name === e.name);
+        this.symptoms = this.symptoms.map((symptom) => {
+            if (visitedSymptom.name == symptom.name) {
+                if (visitedSymptom.answer === 'yes')
+                    this.trueSymptoms += 1;
 
-        if (symptom == undefined) return;
-
-        symptom.answer = visitedSymptom.answer;
-
-        if (visitedSymptom.answer === 'yes')
-            this.trueSymptoms += 1;
-
-        else if (visitedSymptom.answer === 'no') {
-            this.trueSymptoms = inf;
-            this.valid = false;
-        }
+                else if (visitedSymptom.answer === 'no') {
+                    this.trueSymptoms = inf;
+                    this.valid = false;
+                }
+                return { ...visitedSymptom };
+            }
+            return symptom
+        });
 
         this.weight = this.trueSymptoms - this.maxLength
     }

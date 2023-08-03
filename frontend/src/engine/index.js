@@ -60,6 +60,7 @@ pq.all().forEach(rule => {
   })
 });
 pq.update();
+console.log('this is the priority queue   ', pq.head()[0]);
 symptom = pq.head()[0].disease.mostCommonSymptoms();
 console.log('symptom[0] :>> ', symptom[0]);
 pq.all().forEach(rule => {
