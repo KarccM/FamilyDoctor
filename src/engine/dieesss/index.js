@@ -3,6 +3,7 @@ class Symptom{
         this.name = name
         this.question = question
         this.answers = ['yes', 'no', 'unk']
+        this.answer = undefined
     }
 }
 
@@ -10,16 +11,23 @@ class Symptom{
 class Rule{
     constructor(symptoms){
         this.symptoms = symptoms
-        this.remainder = this.symptoms.length
+        this.maxLength = this.symptoms.length
+        this.trueSymptoms = 0
+        this.weight = -999999
+        this.valid = true;
     }
 
     updateRule(visitedSymptom){
         let symptom = this.symptoms.find((e)=> visitedSymptom.name === e.name)
         if(symptom != undefined){
-            if(symptom.answer === 'yes'){
-                this.remainder -=1
-            } else if(symptom.answer === 'no'){
-                this.remainder = 99999
+            symptom.answer = visitedSymptom.answer
+            if(visitedSymptom.answer === 'yes'){
+                this.trueSymptoms +=1
+                this.weight = this.trueSymptoms - this.maxLength
+            } else if(visitedSymptom.answer === 'no'){
+                this.trueSymptoms = -999999
+                this.weight = -99999//this.trueSymptoms - this.maxLength
+                this.valid = false;
             }
         }
     }
@@ -47,13 +55,25 @@ class Disease{
         this.rules.forEach(rule => {
             rule.updateRule(visitedSymptom)
         });
+        this.rules = this.rules.filter(r => r.valid)
+    }
+    
+    compareFunction(a,b){return b-a}
+
+    topNSymptoms(n=1){
+        let sortedRules = this.rules.sort((ruleA,ruleB) =>this.compareFunction(ruleA.weight,ruleB.weight))
+        let prominantSymptoms = []
+      
+        sortedRules.slice(0,n).forEach((rule) => {
+            rule.symptoms.forEach((symptom) => {
+                if(symptom.answer == undefined){
+                    prominantSymptoms.push(symptom)
+                }
+            })
+        })
+        return prominantSymptoms[0] ? prominantSymptoms.length>0 : []
     }
 
-    topNSymptoms(visitedSymptoms){
-        for(rule in this.rules){
-
-        } 
-    }
 }
 
 
@@ -67,6 +87,16 @@ class Node{
         this.score = this.disease.priority
         this.tried = false
     }
+
+    topSymptom(){
+        return this.disease.topNSymptoms()
+    }
+
+    updateRules(visitedSymptom){
+        this.disease.updateRules(visitedSymptom)
+    }
+
+
 
 }
 
