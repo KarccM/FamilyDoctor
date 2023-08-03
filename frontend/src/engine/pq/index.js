@@ -1,26 +1,23 @@
 class PQueue {
-  constructor() {
-    this.init();
+  constructor(nodes) {
+    this.init(nodes);
     console.log('PQueue Init');
   }
-  init() {
+  init(nodes) {
     //we should get answer for reading last session or create new init value
-    this.nodes = [{ ...node }, { ...node }, { ...node, score: 29 }];
+    this.nodes = nodes;
     console.log('init called inside pq');
 
   }
   head(n = 1) {
-    console.log('head called inside pq');
     return this.nodes.slice(0, n);
   }
   update() {
-    console.log('update called inside pq');
-    //sort depend on value 
-    this.nodes.map(node => node.calculate());
-    this.nodes = this.nodes.sort((nodeA, nodeB) => compareNumbers(nodeA.score, nodeB.score));
+    this.nodes = this.nodes.sort((nodeA, nodeB) => {
+      return compareNumbers(nodeA.score(), nodeB.score())
+    });
   }
   all() {
-    console.log('all called inside pq');
     return this.nodes;
   }
   print() {
@@ -30,15 +27,6 @@ class PQueue {
 
 export default PQueue;
 
-
-let node = {
-  score: 2,
-  calculate() {
-    this.score += 1;
-    console.log(this.score);
-  }
-}
-
 function compareNumbers(a, b) {
-  return a - b;
+  return b - a;
 }

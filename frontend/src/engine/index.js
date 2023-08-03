@@ -1,14 +1,5 @@
-// import PQueue from "./pq/index.js"
-
+import PQueue from "./pq/index.js"
 import { Symptom, Node, Disease, Rule } from "./Disease/index.js"
-
-// let pq = new PQueue();
-// console.log('2', pq.head(2));
-// console.log('1', pq.head());
-// console.log('5', pq.head(5));
-
-// pq.print();
-
 
 let vomit = new Symptom('vomit', 'Do you suffer from vomiting?')
 let nausea = new Symptom('nausea', 'Do you suffer from nausea?')
@@ -42,10 +33,42 @@ let node = new Node(new Disease('كريب', 'dsds', 'sdsds', 'wewewe', 2, [
   new Rule([diarrhea, nausea, stuffyNose]),
 ]))
 
-console.log('node.topSymptom()[0] :>> ', node.topSymptom()[0]);
-let symptom = node.topSymptom()[0];
-node.updateRules({
-  ...symptom,
-  answer: 'yes',
-})
-console.log('node.topSymptom()[0] :>> ', node.topSymptom()[0]);
+let node2 = new Node(new Disease('2كريب', 'dsds', 'sdsds', 'wewewe', 99, [
+  new Rule([earPain, nausea, hearingImpairment]),
+  new Rule([earPain, hearingImpairment, stuffyNose]),
+  new Rule([dysphagia, hearingImpairment, stuffyNose]),
+]))
+
+let node3 = new Node(new Disease('3كريب', 'dsds', 'sdsds', 'wewewe', -33, [
+  new Rule([vomit, nausea, bloating]),
+  new Rule([stuffyNose, hearingImpairment, bloating]),
+  new Rule([diarrhea, nausea, hearingImpairment]),
+]))
+
+let pq = new PQueue([
+  node, node2, node3
+]);
+
+
+pq.update();
+let symptom = pq.head()[0].disease.mostCommonSymptoms();
+console.log('symptom[0] :>> ', symptom[0]);
+pq.all().forEach(rule => {
+  rule.updateRules({
+    ...symptom[0],
+    answer: 'no',
+  })
+});
+pq.update();
+symptom = pq.head()[0].disease.mostCommonSymptoms();
+console.log('symptom[0] :>> ', symptom[0]);
+pq.all().forEach(rule => {
+  rule.updateRules({
+    ...symptom[0],
+    answer: 'no',
+  })
+});
+pq.update();
+
+console.log('score', pq.head()[0].score());
+console.log('pq.all() :>> ', pq.all().map(dis => dis.score()));

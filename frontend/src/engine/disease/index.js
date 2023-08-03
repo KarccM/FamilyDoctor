@@ -1,3 +1,4 @@
+const inf = -999
 class Symptom {
     constructor(name, question) {
         this.name = name;
@@ -13,7 +14,7 @@ class Rule {
         this.symptoms = symptoms;
         this.maxLength = this.symptoms.length;
         this.trueSymptoms = 0;
-        this.weight = -999999;
+        this.weight = inf;
         this.valid = true;
     }
 
@@ -28,7 +29,7 @@ class Rule {
             this.trueSymptoms += 1;
 
         else if (visitedSymptom.answer === 'no') {
-            this.trueSymptoms = -999999;
+            this.trueSymptoms = inf;
             this.valid = false;
         }
 
@@ -61,7 +62,7 @@ class Disease {
         this.rules = this.rules.filter(r => r.valid)
     }
 
-    compareFunction(a, b,order) { return order === 'des' ? b - a: a - b }
+    compareFunction(a, b, order) { return order === 'des' ? b - a : a - b }
 
     mostCommonSymptoms(n = 1) {
         let prominantSymptoms = {}
@@ -77,17 +78,12 @@ class Disease {
         })
         // eslint-disable-next-line no-unused-vars
         let sortedSymptoms = Object.entries(prominantSymptoms).map(([_, value]) => ({ ...value }));
-        sortedSymptoms.sort((symptomA, symptomB) => this.compareFunction(symptomA.value, symptomB.value,'des'))
+        sortedSymptoms.sort((symptomA, symptomB) => this.compareFunction(symptomA.value, symptomB.value, 'des'))
         return sortedSymptoms.slice(0, n);
     }
-    
-    generateScore(){
-        return this.max() + this.priority;
-    }
 
-    max(){
-        return this.rules.sort((a,b) =>this.compareFunction(a.weight,b.weight,'ase'))[0];
-    }
+    generateScore() { return this.max() + this.priority; }
+    max() { return this.rules.sort((a, b) => this.compareFunction(a.weight, b.weight, 'ase'))?.[0]?.weight ?? inf; }
 
 }
 
@@ -108,7 +104,7 @@ class Node {
         console.log('this.tried :>> ', this.tried);
     }
 
-    score(){
+    score() {
         return this.disease.generateScore();
     }
 
