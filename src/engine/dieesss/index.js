@@ -58,13 +58,12 @@ class Disease{
         this.rules = this.rules.filter(r => r.valid)
     }
     
-    compareFunction(a,b){return b-a}
+    // compareFunction(a,b){return sb-a}
 
     topNSymptoms(n=1){
-        let sortedRules = this.rules.sort((ruleA,ruleB) =>this.compareFunction(ruleA.weight,ruleB.weight))
+        // let sortedRules = this.rules.sort((ruleA,ruleB) =>this.compareFunction(ruleA.weight,ruleB.weight))
         let prominantSymptoms = []
-      
-        sortedRules.slice(0,n).forEach((rule) => {
+        this.rules.forEach((rule) => {
             rule.symptoms.forEach((symptom) => {
                 if(symptom.answer == undefined){
                     prominantSymptoms.push(symptom)
