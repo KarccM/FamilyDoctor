@@ -51,25 +51,17 @@ let pq = new PQueue([
 
 
 pq.update();
-let symptom = pq.head()[0].disease.mostCommonSymptoms();
-console.log('symptom[0] :>> ', symptom[0]);
-pq.all().forEach(rule => {
-  rule.updateRules({
-    ...symptom[0],
-    answer: 'no',
-  })
-});
-pq.update();
-console.log('this is the priority queue   ', pq.head()[0]);
-symptom = pq.head()[0].disease.mostCommonSymptoms();
-console.log('symptom[0] :>> ', symptom[0]);
-pq.all().forEach(rule => {
-  rule.updateRules({
-    ...symptom[0],
-    answer: 'no',
-  })
-});
-pq.update();
 
-console.log('score', pq.head()[0].score());
-console.log('pq.all() :>> ', pq.all().map(dis => dis.score()));
+let symptom = pq.head()[0].disease.mostCommonSymptoms();
+
+symptom[0].answer = 'no'
+console.log('symptom[0] :>> ', symptom[0]);
+pq.update(symptom[0]);
+
+console.log('this is the priority queue head \n', pq.head()[0])
+
+
+
+symptom = pq.head()[0].disease.mostCommonSymptoms();
+symptom[0].answer = 'yes'
+pq.update(symptom[0])
