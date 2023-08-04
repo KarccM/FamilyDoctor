@@ -12,7 +12,18 @@ class PQueue {
   head(n = 1) {
     return this.nodes.slice(0, n);
   }
-  update() {
+  update(visitedSymptom = null) {
+    // this.nodes.disease.forEach(disease => {
+    //   disease.updateRules(visitedSymptom)
+    // });
+    if(visitedSymptom != null)
+    {
+    this.nodes.forEach(node => {
+      console.log(`*[BEFORE]*this is the node with disease ${node.disease.name}  \t and with score ${node.score()}`)
+      node.disease.updateRules(visitedSymptom)
+      console.log(`*[AFTER]*this is the node with disease ${node.disease.name}  \t and with score ${node.score()}`)
+    })
+  }
     this.nodes = this.nodes.sort((nodeA, nodeB) => {
       return compareNumbers(nodeA.score(), nodeB.score())
     });

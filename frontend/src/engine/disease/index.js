@@ -21,6 +21,7 @@ class Rule {
     updateRule(visitedSymptom) {
         this.symptoms = this.symptoms.map((symptom) => {
             if (visitedSymptom.name == symptom.name) {
+                symptom.answer = visitedSymptom.answer
                 if (visitedSymptom.answer === 'yes')
                     this.trueSymptoms += 1;
 
@@ -28,11 +29,12 @@ class Rule {
                     this.trueSymptoms = inf;
                     this.valid = false;
                 }
-                return { ...visitedSymptom };
+                return symptom;
             }
             return symptom
         });
-
+        console.log(`In updateRule ... \n Symptoms: \n${this.symptoms.forEach(s=> {console.log(s)})}\n \n`)
+        this.symptoms.forEach(s=> {console.log(s.name, s.answer)})
         this.weight = this.trueSymptoms - this.maxLength
     }
 }
@@ -79,6 +81,8 @@ class Disease {
         // eslint-disable-next-line no-unused-vars
         let sortedSymptoms = Object.entries(prominantSymptoms).map(([_, value]) => ({ ...value }));
         sortedSymptoms.sort((symptomA, symptomB) => this.compareFunction(symptomA.value, symptomB.value, 'des'))
+        console.log('this is the symptoms sorted in desc order .............')
+        sortedSymptoms.forEach(s => {console.log(s)})
         return sortedSymptoms.slice(0, n);
     }
 
