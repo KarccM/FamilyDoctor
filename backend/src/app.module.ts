@@ -5,6 +5,9 @@ import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConditionsModule } from './conditions/conditions.module';
+import { SharedModule } from './shared/shared.module';
+import { RulesModule } from './rules/rules.module';
+import { ConclusionModule } from './conclusion/conclusion.module';
 
 // global uri 
 @Module({
@@ -13,6 +16,9 @@ import { ConditionsModule } from './conditions/conditions.module';
     CommandModule,
     MongooseModule.forRoot(process.env.NODE_ENV == 'dev'? process.env.MONGODB_URI_LOCAL : process.env.MONGODB_URI),
     ConditionsModule,
+    SharedModule,
+    RulesModule,
+    ConclusionModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -12,7 +12,7 @@ async function bootstrap() {
   })
   const config = new DocumentBuilder()
     .setTitle('Family Doctor Project')
-    .setDescription('The Family Doctor - Graduation Project API description')
+    .setDescription('The Family Doctor - Graduation Project API documentation')
     .setVersion('1.0')
     .addTag('family-doctor')
     .build()

@@ -20,5 +20,4 @@ export class Diagnosis extends Conclusion{
         });
         this.rules = this.rules.filter(r => r.ruleValidity);
     }
-
 }
