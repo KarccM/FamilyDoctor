@@ -13,4 +13,8 @@ export abstract class Condition{
     toString(){
         return `[Condition]\n\tname: ${this.name}\n`;
     }
+
+    setAnswer(answer:any){
+        this.answer = answer;
+    }
 }

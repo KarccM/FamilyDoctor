@@ -1,1 +1,5 @@
-export class InferenceEngine {}
+export class InferenceEngine {
+  constructor(){
+    
+  }
+}
