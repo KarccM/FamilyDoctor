@@ -16,38 +16,6 @@ export class ConclusionService {
     @InjectModel(Conclusion.name) private conclusionModel: Model<ConclusionDocument>,
     private readonly ruleService: RulesService) {}
 
-  async create(createConclusionDto: CreateConclusionDto): Promise<Conclusion> {
-    let createdConclusion = null;
-    let rules = []
-    try {
-      let conclusion = await this.conclusionModel.findOne({name: createConclusionDto.name})
-      console.log(`This is conclusisoion ${conclusion}`)
-      if(conclusion) {
-        console.log('we are here')
-        throw new BadRequestException(`Conclusion [${createConclusionDto.conclusionType}] [${createConclusionDto.name}] already exists`)}
-      await Promise.all(createConclusionDto.rules.map(async(r) => {
-        const rule = await this.ruleService.create(r);
-        console.log(`This is rule ${rule}`);
-        rules.push(rule);
-        return rule;
-      }))
-      createdConclusion = await this.conclusionModel.create([{
-        name: createConclusionDto.name,
-        priority: createConclusionDto.priority,
-        rules: rules,
-        conclusionType: ConclusionType[createConclusionDto.conclusionType],
-        ...createConclusionDto.conclusion
-      }]);
-    } catch (error) {
-      console.log('thiss is ERRORRRO')
-      throw error
-    } 
-    // finally {
-      console.log(`Created conclusion ${createdConclusion} \n with rules: ${rules}`)
-      return await createdConclusion
-    // }
-  }
-
   async addConclusion(createConclusionDto: CreateConclusionDto){
     let conclusion: ConclusionDocument = null;
     let rules: Rule[] = null;
@@ -65,7 +33,7 @@ export class ConclusionService {
         conclusionType: ConclusionType[createConclusionDto.conclusionType],
         ...other
       });
-      return await conclusion.populate('rules.conditions');
+      return await conclusion.populate('rules.conditions.c');
     } catch (error) {
       console.error(error);
       throw error
@@ -73,15 +41,16 @@ export class ConclusionService {
   }
 
   async findAll(): Promise<Conclusion[]> {
-    return await this.conclusionModel.find({}).populate('rules.conditions');
+    let result =  await this.conclusionModel.find({});
+    return await this.conclusionModel.populate(result, {path: 'rules.conditions.c', localField: 'rules.conditions.c', foreignField: 'conditions._id' })
   }
 
   async findAllDiagnosis(): Promise<Conclusion[]> {
-    return await this.conclusionModel.discriminators[ConclusionType.Diagnosis].find({}).populate('rules.conditions');
+    return await this.conclusionModel.discriminators[ConclusionType.Diagnosis].find({}).populate('rules.conditions.0');
   }
 
   async findOne(id: string): Promise<Conclusion> {
-    return await this.conclusionModel.findById(id).populate('rules.conditions');
+    return await this.conclusionModel.findById(id).populate('rules.conditions.0');
   }
 
   async update(id: string, updateConclusionDto: UpdateConclusionDto): Promise<Conclusion> {

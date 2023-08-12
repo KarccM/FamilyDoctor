@@ -1,14 +1,19 @@
 import { Condition } from "./condition";
+import { ConditionValue } from "src/shared/Utils/constants/types";
 export var INF = 999;
 
+// export type CondAnswer = Record<Condition, any>
+
+
 export class Rule{
-    conditions: Condition[];
+    // conditions: Condition[];
+    conditions: ConditionValue[]
     ruleLength: number;
     trueCondCount: number;
     ruleWeight: number;
     ruleValidity: boolean;
 
-    constructor(conditions: Condition[]){
+    constructor(conditions: ConditionValue[]){
         this.conditions = conditions;
         this.ruleLength = this.conditions.length;
         this.trueCondCount = 0;
@@ -18,12 +23,12 @@ export class Rule{
 
     updateRule(visitedCondition: Condition): void{
         this.conditions = this.conditions.map((condition) => {
-            if(condition.name === visitedCondition.name) {
-                condition.answer = visitedCondition.answer;
-                if(condition.answer === 'yes') //TODO: make this more general by considering which value is the true value.
+            if(condition[0].name === visitedCondition.name) {
+                condition[0].answer = visitedCondition.answer;
+                if(condition[0].answer === condition[1]) //TODO: make this more general by considering which value is the true value.
                 {
                     this.trueCondCount += 1;
-                } else if (condition.answer === 'no') {
+                } else if (condition[0].answer === 'no') {
                     this.trueCondCount = -INF;
                     this.ruleValidity = false;
                 }

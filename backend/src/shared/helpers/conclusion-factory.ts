@@ -13,6 +13,7 @@ export function ConclusionFactory(conclusion: Conclusion): ConclusionClass {
         let ruleInstance = RuleFactory(r);
         rules.push(ruleInstance);
     });
+    // console.log('From ConcFactory\n'+rules)
     switch(conclusion.conclusionType){
         case ConclusionType.Diagnosis:
             concInstance = new Diagnosis(conclusion.name, rules, conclusion.priority, conclusion['treatment'], conclusion['specialist'], conclusion['notes']);

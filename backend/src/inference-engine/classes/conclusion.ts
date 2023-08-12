@@ -1,3 +1,4 @@
+import { ConditionValue } from 'src/shared/Utils/constants/types';
 import { Condition } from './condition';
 import { INF, Rule } from "./rule";
 export function compareFn(a, b, order='desc') {return order === 'desc'? b-a : a-b}
@@ -22,11 +23,11 @@ export abstract class Conclusion{
 
 
     topNConditions(n: number=1): Condition[]{
-        let prominantConditions : {condition: Condition, value: number}[] = []
+        let prominantConditions : {condition: ConditionValue, value: number}[] = []
         this.rules.forEach(rule => {
             rule.conditions.forEach(cond => {
-                if(cond.answer == undefined){
-                    let pc = prominantConditions.find((c) => c.condition.name == cond.name, prominantConditions);
+                if(cond[0].answer == undefined){
+                    let pc = prominantConditions.find((c) => c.condition[0].name == cond[0].name, prominantConditions);
                     if(pc != undefined){
                         pc.value += 1;
                     } else {
@@ -36,7 +37,7 @@ export abstract class Conclusion{
             })
         });
         return prominantConditions.sort((pc1, pc2) => compareFn(pc1.value, pc2.value, 'desc'))
-                                        .map(c=> c.condition)
+                                        .map(c=> c.condition[0])
                                         .slice(0,n)
         // let sorted = prominantConditions.map(c=> c.condition );
     }

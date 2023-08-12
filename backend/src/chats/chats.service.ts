@@ -54,7 +54,7 @@ export class ChatsService {
             let condition = await this.conditionsService.findOneByName(answerChatDto.condition.name);
             if (condition == null || condition == undefined) {throw new BadRequestException(`Condition ${answerChatDto.condition.name} does not exist`)}
             let condInstance: ConditionClass;
-            condInstance = ConditionFactory(condition)
+            condInstance = ConditionFactory({c: condition, v:null})
             condInstance.answer = answerChatDto.condition.answer;
             let context = {}
             let pqueue: PriorityQueue = await this.inferenceEngineService.init();
@@ -62,6 +62,8 @@ export class ChatsService {
             conditionRes = pqueue.askQuestion()
             context = pqueue;
             chat.context = context;
+            console.log(pqueue + '\nEnd')
+            pqueue.getHead()[0].conclusion.rules.forEach(r => console.log(r.conditions))
         } catch (error) {
             throw error
         }

@@ -13,6 +13,7 @@ import { Diagnosis as DiagnosisClass } from './classes/diagnosis';
 import { ConclusionType, ConditionType } from 'src/shared/Utils/constants/enums';
 import { PriorityQueue } from './classes/priority-queue';
 import { Goal } from './classes/goal';
+import { ConclusionFactory } from 'src/shared/helpers/conclusion-factory';
 
 @Injectable()
 export class InferenceEngineService {
@@ -30,23 +31,8 @@ export class InferenceEngineService {
             conclusionsKB = await this.conclusisonService.findAll();
             conclusionsKB.forEach(d => {
                 let conclusionInstance: ConclusionClass = null;
-                let ruleInstances: RuleClass[] = [];
-                d.rules.forEach(r => {
-                    let ruleInstance: RuleClass = null;
-                    let condInstances: ConditionClass[] = [];
-                    r.conditions.forEach(c => {
-                        let condInstance: ConditionClass = null
-                        let condType = c.conditionType;
-                        if(condType == ConditionType.Symptom) condInstance = new SymptomClass(c.name, c.question);
-                        if(condType == ConditionType.MedicalCondition) condInstance = new MedicalConditionClass(c.name, c.question, c.values);
-                        if(condType == ConditionType.PatientInfo) condInstance = new PatientInfoClass(c.name, c.question, c.values);
-                        condInstances.push(condInstance)
-                    });
-                    ruleInstance = new RuleClass(condInstances);
-                    ruleInstances.push(ruleInstance);
-                })
-                let concType = d.conclusionType;
-                if(concType == ConclusionType.Diagnosis) conclusionInstance = new DiagnosisClass(d.name, ruleInstances, d.priority, d['treatment'], d['specialist'], d['notes']);
+                conclusionInstance = ConclusionFactory(d);
+                console.log('From HERE\n'+ conclusionInstance)
                 conclusions.push(conclusionInstance);
             });
             conclusions.forEach(c => {
@@ -55,6 +41,7 @@ export class InferenceEngineService {
                 goals.push(goalInstance);
             });
             pqueue = new PriorityQueue(goals);
+            // console.log('Priority queue here \n' + pqueue)
             return pqueue;
         } catch (error) {
             throw error
