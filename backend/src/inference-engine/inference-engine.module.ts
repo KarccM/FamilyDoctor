@@ -11,5 +11,6 @@ import { ConclusionModule } from "src/conclusion/conclusion.module";
         ConclusionModule
     ],
     providers:[InferenceEngineService],
+    exports: [InferenceEngineService],
 })
 export class InferenceEngine {}

@@ -3,9 +3,16 @@ import { Conclusion } from 'src/conclusion/conclusion.schema';
 import { ConclusionService } from 'src/conclusion/conclusion.service';
 import { Condition } from 'src/conditions/conditions.schema';
 import { ConditionsService } from 'src/conditions/conditions.service';
-import { Symptom } from './classes/symptom';
-import { MedicalCondition } from './classes/medical-condition';
-import { PatientInfo } from './classes/patient-info';
+import { Symptom as SymptomClass } from './classes/symptom';
+import { MedicalCondition as MedicalConditionClass } from './classes/medical-condition';
+import { PatientInfo as PatientInfoClass } from './classes/patient-info';
+import { Rule as RuleClass } from './classes/rule';
+import { Conclusion as ConclusionClass } from './classes/conclusion';
+import { Condition as ConditionClass } from './classes/condition';
+import { Diagnosis as DiagnosisClass } from './classes/diagnosis';
+import { ConclusionType, ConditionType } from 'src/shared/Utils/constants/enums';
+import { PriorityQueue } from './classes/priority-queue';
+import { Goal } from './classes/goal';
 
 @Injectable()
 export class InferenceEngineService {
@@ -14,25 +21,47 @@ export class InferenceEngineService {
         private readonly conclusisonService: ConclusionService
     ) {}
 
-    async init(){
-        let conditionsKB: Condition[] = null;
-        let symptomsKB: Condition[], medicalCondsKB: Condition[], patientInfosKB: Condition[];
-        let conclusionsKB: Conclusion[] = null;
-        let diagnoisKB: Conclusion[];
-        let symptoms: Symptom[],
-            medicalConds: MedicalCondition[],
-            patientInfos: PatientInfo[]; 
+    async init() : Promise<PriorityQueue>{
+        let pqueue: PriorityQueue = null;
+        let goals: Goal[] = [];
+        let conclusionsKB: Conclusion[];
+        let conclusions: ConclusionClass[];
         try {
-            symptomsKB = await this.conditionsService.findAllSymptoms();
-            medicalCondsKB = await this.conditionsService.findAllMedicalConditions();
-            patientInfosKB = await this.conditionsService.findAllPatientInfo();
-            
-            diagnoisKB = await this.conclusisonService.findAllDiagnosis();
-
-            
-
+            conclusionsKB = await this.conclusisonService.findAll();
+            conclusionsKB.forEach(d => {
+                let conclusionInstance: ConclusionClass = null;
+                let ruleInstances: RuleClass[] = [];
+                d.rules.forEach(r => {
+                    let ruleInstance: RuleClass = null;
+                    let condInstances: ConditionClass[] = [];
+                    r.conditions.forEach(c => {
+                        let condInstance: ConditionClass = null
+                        let condType = c.conditionType;
+                        if(condType == ConditionType.Symptom) condInstance = new SymptomClass(c.name, c.question);
+                        if(condType == ConditionType.MedicalCondition) condInstance = new MedicalConditionClass(c.name, c.question, c.values);
+                        if(condType == ConditionType.PatientInfo) condInstance = new PatientInfoClass(c.name, c.question, c.values);
+                        condInstances.push(condInstance)
+                    });
+                    ruleInstance = new RuleClass(condInstances);
+                    ruleInstances.push(ruleInstance);
+                })
+                let concType = d.conclusionType;
+                if(concType == ConclusionType.Diagnosis) conclusionInstance = new DiagnosisClass(d.name, ruleInstances, d.priority, d['treatment'], d['specialist'], d['notes']);
+                conclusions.push(conclusionInstance);
+            });
+            conclusions.forEach(c => {
+                let goalInstance: Goal;
+                goalInstance = new Goal(c);
+                goals.push(goalInstance);
+            });
+            pqueue = new PriorityQueue(goals);
+            return pqueue;
         } catch (error) {
             throw error
         }
+    }
+
+    async initFromKB(context: any){
+
     }
 }

@@ -49,6 +49,10 @@ export class ConditionsService {
     return await this.conditionModel.findById(id)
   }
 
+  async findOneByName(name: string): Promise<Condition> {
+    return await this.conditionModel.findOne({name: name})
+  }
+
   async update(id: string, updateConditionDto: UpdateConditionDto): Promise<Condition> {
     let condition;
     try{

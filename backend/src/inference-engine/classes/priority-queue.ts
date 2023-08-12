@@ -30,6 +30,14 @@ export class PriorityQueue {
         return this.goals;
     }
 
+    askQuestion(): Condition{
+        let condition: Condition;
+        let goal: Goal
+        goal = this.getHead()[0];
+        condition = goal.conclusion.topNConditions()[0];
+        return condition;
+    }
+
     toString() {
         this.sortNodes();
         return `\n[PriorityQueue] with goals: ${this.goals} `

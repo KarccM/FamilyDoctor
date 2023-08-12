@@ -5,7 +5,9 @@ export type ConditionDocument = HydratedDocument<Condition>;
 
 @Schema()
 export class MedicalCondition {
-    name: string;
+    @Prop({required: true, unique: true})
+    name!: string;
+
     conditionType: string;
     question: string;
 
@@ -15,7 +17,9 @@ export class MedicalCondition {
 
 @Schema()
 export class Symptom {
-    name: string;
+    @Prop({required: true, unique: true})
+    name!: string;
+
     conditionType: string;
     question: string;
 
@@ -25,7 +29,9 @@ export class Symptom {
 
 @Schema()
 export class PatientInfo {
-    name: string;
+    @Prop({required: true, unique: true})
+    name!: string;
+
     conditionType: string;
     question: string;
 
@@ -39,7 +45,7 @@ export class PatientInfo {
 export class Condition{
     _id
     
-    @Prop({required: true})
+    @Prop({required: true, unique: true})
     name: string;
 
     @Prop()

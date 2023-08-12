@@ -10,7 +10,6 @@ export class Condition{
         this.values = values;
     }
 
-
     toString(){
         return `[Condition]\n\tname: ${this.name}\n`;
     }
