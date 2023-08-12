@@ -5,7 +5,7 @@ import { Model } from 'mongoose';
 import { ChatEntity } from './entities/chat.entity';
 import { CreateChatDto } from './dto/create-chat.dto';
 import { UpdateChatDto } from './dto/update-chat.dto';
-import { NotFoundException} from '@nestjs/common/exceptions'
+import { BadRequestException, NotFoundException} from '@nestjs/common/exceptions'
 import { AnswerChatDto } from './dto/answer-chat.dto';
 import { InferenceEngineService } from 'src/inference-engine/inference-engine.service';
 import { PriorityQueue } from 'src/inference-engine/classes/priority-queue';
@@ -15,6 +15,8 @@ import { ConditionType } from 'src/shared/Utils/constants/enums';
 import { Symptom as SymptomClass } from 'src/inference-engine/classes/symptom';
 import { MedicalCondition as MedicalConditionClass } from 'src/inference-engine/classes/medical-condition';
 import { PatientInfo as PatientInfoClass } from 'src/inference-engine/classes/patient-info';
+import { ConditionFactory } from 'src/shared/helpers/condition-factory';
+import { ChatResponse } from './entities/chat-response.entity';
 
 @Injectable()
 export class ChatsService {
@@ -42,27 +44,30 @@ export class ChatsService {
         return await chat.save();
     }
 
-    async answer(answerChatDto: AnswerChatDto): Promise<ChatEntity> {
+    async answer(answerChatDto: AnswerChatDto): Promise<ChatResponse> {
         let chat: ChatDocument;
+        let response: ChatResponse;
+        let conditionRes;
         try{
             chat = await this.chatModel.findOne({_id: answerChatDto._id, user_id: answerChatDto.user_id})
             if(chat == null || chat == undefined) {throw new Error('Chat does not exist')}
             let condition = await this.conditionsService.findOneByName(answerChatDto.condition.name);
+            if (condition == null || condition == undefined) {throw new BadRequestException(`Condition ${answerChatDto.condition.name} does not exist`)}
             let condInstance: ConditionClass;
-            let condType = condition.conditionType;
-            if(condType == ConditionType.Symptom) condInstance = new SymptomClass(condition.name, condition.question);
-            if(condType == ConditionType.MedicalCondition) condInstance = new MedicalConditionClass(condition.name, condition.question, condition.values);
-            if(condType == ConditionType.PatientInfo) condInstance = new PatientInfoClass(condition.name, condition.question, condition.values);
+            condInstance = ConditionFactory(condition)
             condInstance.answer = answerChatDto.condition.answer;
             let context = {}
             let pqueue: PriorityQueue = await this.inferenceEngineService.init();
             pqueue.updateNodes(condInstance);
+            conditionRes = pqueue.askQuestion()
             context = pqueue;
             chat.context = context;
         } catch (error) {
             throw error
         }
-        return await chat.save();
+        await chat.save();
+        response = { condition: conditionRes, context: chat.context, _id: chat.id, user_id: chat.user_id }
+        return response;
     }
 
     async findAll(): Promise<ChatEntity[]> {

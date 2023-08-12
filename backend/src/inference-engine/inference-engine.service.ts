@@ -24,8 +24,8 @@ export class InferenceEngineService {
     async init() : Promise<PriorityQueue>{
         let pqueue: PriorityQueue = null;
         let goals: Goal[] = [];
-        let conclusionsKB: Conclusion[];
-        let conclusions: ConclusionClass[];
+        let conclusionsKB: Conclusion[] = [];
+        let conclusions: ConclusionClass[] = [];
         try {
             conclusionsKB = await this.conclusisonService.findAll();
             conclusionsKB.forEach(d => {

@@ -1,12 +1,12 @@
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger/dist";
 
 export class ChatEntity{
-    @ApiPropertyOptional({type: String})
+    @ApiPropertyOptional({type: String, description: 'Chat ID'})
     _id: string;
 
-    @ApiPropertyOptional({type: String})
+    @ApiPropertyOptional({type: String, description: 'User ID'})
     user_id: string;
 
-    @ApiPropertyOptional()
+    @ApiPropertyOptional({type: Object, description: 'Context - PQueue of the current chat'})
     context: any;
 }
