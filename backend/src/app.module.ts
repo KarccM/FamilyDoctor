@@ -8,6 +8,8 @@ import { ConditionsModule } from './conditions/conditions.module';
 import { SharedModule } from './shared/shared.module';
 import { RulesModule } from './rules/rules.module';
 import { ConclusionModule } from './conclusion/conclusion.module';
+import { ChatsModule } from './chats/chats.module';
+import { InferenceEngine } from './inference-engine/inference-engine.module';
 
 // global uri 
 @Module({
@@ -19,6 +21,8 @@ import { ConclusionModule } from './conclusion/conclusion.module';
     SharedModule,
     RulesModule,
     ConclusionModule,
+    ChatsModule,
+    InferenceEngine
   ],
   controllers: [AppController],
   providers: [AppService],

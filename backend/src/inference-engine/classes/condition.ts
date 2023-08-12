@@ -1,4 +1,4 @@
-export abstract class Condition{
+export class Condition{
     name: string;
     question: string;
     values: any[];
@@ -9,6 +9,7 @@ export abstract class Condition{
         this.question = question;
         this.values = values;
     }
+
 
     toString(){
         return `[Condition]\n\tname: ${this.name}\n`;

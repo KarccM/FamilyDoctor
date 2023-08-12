@@ -1,4 +1,4 @@
-import { Condition } from "./condition";
+import { Condition } from './condition';
 import { INF, Rule } from "./rule";
 export function compareFn(a, b, order='desc') {return order === 'desc'? b-a : a-b}
 
@@ -13,7 +13,12 @@ export abstract class Conclusion{
         this.priority = priority;
     }
 
-    abstract updateRules(visitedCondition: Condition);
+    updateRules(visitedCondition: Condition) {
+        this.rules.forEach(rule => {
+            rule.updateRule(visitedCondition);
+        });
+        this.rules = this.rules.filter(r => r.ruleValidity);
+    }
 
 
     topNConditions(n: number=1): Condition[]{

@@ -10,13 +10,19 @@ export class ConclusionController {
   constructor(private readonly conclusionService: ConclusionService) {}
 
   @Post()
-  create(@Body() createConclusionDto: CreateConclusionDto) {
-    return this.conclusionService.create(createConclusionDto);
+  async create(@Body() createConclusionDto: CreateConclusionDto) {
+    // return this.conclusionService.create(createConclusionDto);
+    return await this.conclusionService.addConclusion(createConclusionDto)
   }
 
   @Get()
   findAll() {
     return this.conclusionService.findAll();
+  }
+
+  @Get('/diagnosis')
+  findAllDiagnosis(){
+    return this.conclusionService.findAllDiagnosis();
   }
 
   @Get(':id')

@@ -3,7 +3,6 @@ import { ConditionsService } from './conditions.service';
 import { CreateConditionDto } from './dto/create-condition.dto';
 import { UpdateConditionDto } from './dto/update-condition.dto';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger/dist';
-import { InferenceEngine } from 'src/inference-engine/inference-engine';
 import { Condition } from './entities/condition.entity';
 
 
@@ -20,7 +19,7 @@ export class ConditionsController {
   create(@Body() createConditionDto: CreateConditionDto) {
     return this.conditionsService.create(createConditionDto);
   }
-
+  
   @Get()
   @ApiOperation({summary: 'Get [ALL] conditions'})
   @ApiResponse({

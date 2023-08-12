@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
+import { Rule, RuleSchema } from 'src/rules/rule.schema';
 
 export type ConclusionDocument = HydratedDocument<Conclusion>;
 @Schema()
@@ -22,7 +23,8 @@ export class Conclusion{
     @Prop({type: Number, required: true})
     priority: number;
 
-    rules: []
+    @Prop({type: [RuleSchema]})
+    rules: Rule[];
 
     @Prop({
         type: String,

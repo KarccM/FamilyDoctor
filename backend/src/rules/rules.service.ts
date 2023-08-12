@@ -4,6 +4,7 @@ import { UpdateRuleDto } from './dto/update-rule.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Rule, RuleDocument } from './rule.schema';
 import { Model } from 'mongoose';
+import { ObjectId } from 'mongodb';
 import { ConditionsService } from 'src/conditions/conditions.service';
 import { BadRequestException} from '@nestjs/common/exceptions'
 
@@ -28,6 +29,28 @@ export class RulesService {
     // let rule = new Rule();
     // rule.conditions = conditions;
     return {conditions: conditions.map(c => c._id)};
+  }
+
+
+  async addRule(createRuleDto: CreateRuleDto) {
+    try {
+      let conditions = []
+      conditions = await Promise.all(
+        createRuleDto.conditions.map(async (c) => {
+          try{
+          let c_id = new ObjectId(c);
+        } catch (error) {
+          throw new BadRequestException(`Conditions ID not valid`);
+        }
+          return await this.conditionService.findOne(c);
+        })
+      )
+      conditions = conditions.map(c => {return c._id});
+      return {conditions: conditions}
+    } catch (error) {
+      console.error(error)
+      throw(error)
+    }
   }
 
   async findAll() {

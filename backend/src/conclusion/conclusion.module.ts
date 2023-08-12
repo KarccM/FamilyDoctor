@@ -19,6 +19,7 @@ import { RulesModule } from 'src/rules/rules.module';
     RulesModule,
   ],
   controllers: [ConclusionController],
-  providers: [ConclusionService]
+  providers: [ConclusionService],
+  exports: [ConclusionService]
 })
 export class ConclusionModule {}

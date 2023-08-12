@@ -27,7 +27,6 @@ export class Rule{
                     this.trueCondCount = -INF;
                     this.ruleValidity = false;
                 }
-                return condition;
             }
             return condition;
         });

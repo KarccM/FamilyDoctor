@@ -6,7 +6,7 @@ export class Goal{
     score: number;
     previouslyTried: boolean;
 
-    constructor(conclusion){
+    constructor(conclusion: Conclusion){
         this.conclusion = conclusion;
         this.previouslyTried = false;
     }

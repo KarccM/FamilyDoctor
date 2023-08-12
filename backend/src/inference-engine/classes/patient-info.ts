@@ -7,4 +7,3 @@ export class PatientInfo extends Condition{
         this.answer = undefined;
     }
 }
-

@@ -13,11 +13,4 @@ export class Diagnosis extends Conclusion{
         this.specialist = specialist;
         this.notes = notes;
     }
-
-    updateRules(visitedCondition: Condition) {
-        this.rules.forEach(rule => {
-            rule.updateRule(visitedCondition);
-        });
-        this.rules = this.rules.filter(r => r.ruleValidity);
-    }
 }
