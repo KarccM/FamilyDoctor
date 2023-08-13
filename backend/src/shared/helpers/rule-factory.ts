@@ -9,9 +9,9 @@ export function RuleFactory(rule: Rule): RuleClass {
     let ruleInstance: RuleClass;
     let condInstances: ConditionValueType[] = [];
     rule.conditions.forEach(c => {
-        console.log(+c[0].name + '....' +c[1])
+        console.log(+c['c'].name + '....' +c['v'])
         let condInstance = ConditionFactory(c);
-        condInstances.push([condInstance, c[1]]);
+        condInstances.push([condInstance, c['v']]);
     });
     console.log('From RuleFactory\n'+rule.conditions)
     ruleInstance = new RuleClass(condInstances);

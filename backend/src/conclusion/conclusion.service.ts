@@ -8,13 +8,15 @@ import { ConclusionType } from 'src/shared/Utils/constants/enums';
 import { BadRequestException } from '@nestjs/common/exceptions';
 import { RulesService } from 'src/rules/rules.service';
 import { Rule } from 'src/rules/rule.schema';
+import { ConditionsService } from 'src/conditions/conditions.service';
 
 
 @Injectable()
 export class ConclusionService {
   constructor(
     @InjectModel(Conclusion.name) private conclusionModel: Model<ConclusionDocument>,
-    private readonly ruleService: RulesService) {}
+    private readonly ruleService: RulesService,
+    private readonly conditionService: ConditionsService) {}
 
   async addConclusion(createConclusionDto: CreateConclusionDto){
     let conclusion: ConclusionDocument = null;
@@ -42,7 +44,44 @@ export class ConclusionService {
 
   async findAll(): Promise<Conclusion[]> {
     let result =  await this.conclusionModel.find({});
-    return await this.conclusionModel.populate(result, {path: 'rules.conditions.c', localField: 'rules.conditions.c', foreignField: 'conditions._id' })
+    let populatedResult = await this.populateConditions(result)
+    return populatedResult;
+  }
+
+  async populateConditions(items: Array<Conclusion>) {
+    if(Array.isArray(items)){
+      let new_items: Conclusion[];
+      try{
+        new_items = await Promise.all(items.map(async(i) => {
+          return await this.populateCondition(i);
+        }))
+      } catch (error) {
+        console.log(error)
+      }
+      return new_items;
+    }
+  }
+
+  async populateCondition(item: Conclusion): Promise<Conclusion> {
+    let conclusion: Conclusion = null
+    let rules: any[] =[]
+    try{
+      item.rules = await Promise.all(
+        item.rules.map(async(rule) => {
+          let conditions: any[] = [];
+          conditions = await Promise.all(
+            rule.conditions.map(async(cond) => {
+              let condObj = await this.conditionService.findOne(cond.c._id);
+              return {c: condObj, v: cond.v}
+            })
+          )
+          return { conditions: conditions }
+        })
+      )
+    } catch (error) {
+      console.error(error)
+    }
+    return item;
   }
 
   async findAllDiagnosis(): Promise<Conclusion[]> {
