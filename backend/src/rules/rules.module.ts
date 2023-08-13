@@ -4,11 +4,8 @@ import { SharedModule } from 'src/shared/shared.module';
 import { ConditionsModule } from 'src/conditions/conditions.module';
 
 @Module({
-  imports: [
-    SharedModule,
-    ConditionsModule
-  ],
+  imports: [SharedModule, ConditionsModule],
   providers: [RulesService],
-  exports: [RulesService]
+  exports: [RulesService],
 })
 export class RulesModule {}

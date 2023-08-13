@@ -11,18 +11,22 @@ import { ConclusionModule } from './conclusion/conclusion.module';
 import { ChatsModule } from './chats/chats.module';
 import { InferenceEngine } from './inference-engine/inference-engine.module';
 
-// global uri 
+// global uri
 @Module({
   imports: [
-    ConfigModule.forRoot({isGlobal: true}),
+    ConfigModule.forRoot({ isGlobal: true }),
     CommandModule,
-    MongooseModule.forRoot(process.env.NODE_ENV == 'dev'? process.env.MONGODB_URI_LOCAL : process.env.MONGODB_URI),
+    MongooseModule.forRoot(
+      process.env.NODE_ENV == 'dev'
+        ? process.env.MONGODB_URI_LOCAL
+        : process.env.DATABASE_URI,
+    ),
     ConditionsModule,
     SharedModule,
     RulesModule,
     ConclusionModule,
     ChatsModule,
-    InferenceEngine
+    InferenceEngine,
   ],
   controllers: [AppController],
   providers: [AppService],

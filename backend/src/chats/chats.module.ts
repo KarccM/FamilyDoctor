@@ -9,15 +9,17 @@ import { ConditionsModule } from 'src/conditions/conditions.module';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{
-      name: Chat.name,
-      schema: ChatSchema,
-    }]),
+    MongooseModule.forFeature([
+      {
+        name: Chat.name,
+        schema: ChatSchema,
+      },
+    ]),
     SharedModule,
     InferenceEngine,
-    ConditionsModule
+    ConditionsModule,
   ],
   controllers: [ChatsController],
-  providers: [ChatsService]
+  providers: [ChatsService],
 })
 export class ChatsModule {}

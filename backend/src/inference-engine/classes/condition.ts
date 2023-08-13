@@ -1,16 +1,16 @@
-export class Condition{
-    name: string;
-    question: string;
-    values: any[];
-    answer: any;
+export class Condition {
+  name: string;
+  question: string;
+  values: any[];
+  answer: any;
 
-    constructor(name: string, question: string, values: any[]){
-        this.name = name;
-        this.question = question;
-        this.values = values;
-    }
+  constructor(name: string, question: string, values: any[]) {
+    this.name = name;
+    this.question = question;
+    this.values = values;
+  }
 
-    toString(){
-        return `[Condition]\n\tname: ${this.name}\n`;
-    }
+  toString() {
+    return `[Condition]\n\tname: ${this.name}\n`;
+  }
 }

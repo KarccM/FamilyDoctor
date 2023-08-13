@@ -1,75 +1,70 @@
-import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { HydratedDocument } from "mongoose";
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { HydratedDocument } from 'mongoose';
 
 export type ConditionDocument = HydratedDocument<Condition>;
 
 @Schema()
 export class MedicalCondition {
-    @Prop({required: true, unique: true})
-    name!: string;
+  @Prop({ required: true, unique: true })
+  name!: string;
 
-    conditionType: string;
-    question: string;
+  conditionType: string;
+  question: string;
 
-    @Prop({type: [String]})
-    values: string[];
+  @Prop({ type: [String] })
+  values: string[];
 }
 
 @Schema()
 export class Symptom {
-    @Prop({required: true, unique: true})
-    name!: string;
+  @Prop({ required: true, unique: true })
+  name!: string;
 
-    conditionType: string;
-    question: string;
+  conditionType: string;
+  question: string;
 
-    @Prop({type: [String]})
-    values: string[];
+  @Prop({ type: [String] })
+  values: string[];
 }
 
 @Schema()
 export class PatientInfo {
-    @Prop({required: true, unique: true})
-    name!: string;
+  @Prop({ required: true, unique: true })
+  name!: string;
 
-    conditionType: string;
-    question: string;
+  conditionType: string;
+  question: string;
 
-    @Prop({type: []})
-    values: any[];
+  @Prop({ type: [] })
+  values: any[];
 }
 
+@Schema({ discriminatorKey: 'conditionType' })
+export class Condition {
+  _id;
 
+  @Prop({ required: true, unique: true })
+  name: string;
 
-@Schema({discriminatorKey: 'conditionType'})
-export class Condition{
-    _id
-    
-    @Prop({required: true, unique: true})
-    name: string;
+  @Prop()
+  question: string;
 
-    @Prop()
-    question: string;
+  @Prop()
+  values: [];
 
-    @Prop()
-    values: [];
-
-    @Prop({
-        type: String,
-        required: true,
-        enum: [Symptom.name, MedicalCondition.name, PatientInfo.name]
-    })
-    conditionType: string;
+  @Prop({
+    type: String,
+    required: true,
+    enum: [Symptom.name, MedicalCondition.name, PatientInfo.name],
+  })
+  conditionType: string;
 }
 
+export const SymptomSchema = SchemaFactory.createForClass(Symptom);
 
-export const SymptomSchema = SchemaFactory.createForClass(Symptom)
+export const MedicalConditionSchema =
+  SchemaFactory.createForClass(MedicalCondition);
 
-
-export const MedicalConditionSchema = SchemaFactory.createForClass(MedicalCondition)
-
-
-export const PatientInfoSchema = SchemaFactory.createForClass(PatientInfo)
-
+export const PatientInfoSchema = SchemaFactory.createForClass(PatientInfo);
 
 export const ConditionSchema = SchemaFactory.createForClass(Condition);

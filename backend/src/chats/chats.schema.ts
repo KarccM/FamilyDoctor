@@ -3,17 +3,17 @@ import { HydratedDocument } from 'mongoose';
 
 export type ChatDocument = HydratedDocument<Chat>;
 
-@Schema({timestamps: true})
-export class Chat{
-    _id
+@Schema({ timestamps: true })
+export class Chat {
+  _id;
 
-    @Prop({type: String, required: true})
-    user_id: string;
+  @Prop({ type: String, required: true })
+  user_id: string;
 
-    @Prop({type: {}})
-    context: any;
+  @Prop({ type: {} })
+  context: any;
 
-    // @Prop({type: Date})
+  // @Prop({type: Date})
 }
 
 export const ChatSchema = SchemaFactory.createForClass(Chat);
