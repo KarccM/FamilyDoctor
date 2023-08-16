@@ -1,7 +1,7 @@
 import * as React from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 
-function AppProviders({ children }) {
+export default function ReactQueryProvider({ children }) {
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
@@ -22,5 +22,3 @@ function AppProviders({ children }) {
     </QueryClientProvider>
   );
 }
-
-export { AppProviders };
