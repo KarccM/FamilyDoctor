@@ -3,6 +3,7 @@ import { Link, createBrowserRouter } from "react-router-dom";
 import DashboardLayout from "./layouts/dashboard";
 import AddSymptom from "./screens/symptoms/add";
 import EditSymptom from "./screens/symptoms/edit";
+import Dashboard from "./screens";
 
 
 const useRouter = () => {
@@ -16,6 +17,7 @@ const useRouter = () => {
                     crumb: () => <Link to="/">لوحة التحكم</Link>,
                 },
                 children: [
+                    { index: true, element: <Dashboard /> },
                     {
                         path: "diseases",
                         handle: {
