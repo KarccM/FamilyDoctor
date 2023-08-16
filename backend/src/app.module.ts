@@ -16,7 +16,7 @@ import { InferenceEngine } from './inference-engine/inference-engine.module';
   imports: [
     ConfigModule.forRoot({isGlobal: true}),
     CommandModule,
-    MongooseModule.forRoot(process.env.NODE_ENV == 'dev'? process.env.MONGODB_URI_LOCAL : process.env.MONGODB_URI),
+    MongooseModule.forRoot(process.env.NODE_ENV == 'dev'? process.env.MONGODB_URI_LOCAL : process.env.DATABASE_URI),
     ConditionsModule,
     SharedModule,
     RulesModule,
