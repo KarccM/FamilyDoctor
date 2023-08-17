@@ -9,7 +9,7 @@ export class Condition {
     question: string;
 
     @ApiPropertyOptional({ type: String, enum: ConditionType})
-    conditionType: string;
+    conditionType?: string;
 
     @ApiPropertyOptional({ type: [], isArray: true })
     values: any[];

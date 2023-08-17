@@ -22,4 +22,10 @@ export class ChatsController {
   chat(@Body() answerChatDto: AnswerChatDto){
     return this.chatsService.answer(answerChatDto)
   }
+
+  @Get('/chat/:id')
+  @ApiResponse({type: ChatResponse})
+  start(@Body()user_id: string, @Param('id')id: string){
+    return this.chatsService.start(id, user_id);
+  }
 }

@@ -61,6 +61,12 @@ export class InferenceEngineService {
         }
     }
 
+    async start(id: string, user_id: string){
+        let pqueue: PriorityQueue = await this.init();
+        let res = { condition: pqueue.askQuestion(), context: pqueue, _id: id, user_id: user_id}
+        return res;
+    }
+
     async initFromKB(context: any){
 
     }

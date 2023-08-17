@@ -32,6 +32,19 @@ export class ChatsService {
         return chat;
     }
 
+    async start(id: string, user_id: string){
+        let chat: ChatDocument;
+        let res:  ChatResponse;
+        try {
+            chat = await  this.chatModel.findOne({_id: id, user_id: user_id});
+            if(chat == null || chat == undefined) throw new BadRequestException(`Chat with id:${id} and user:${user_id} doesnot exist`);
+            res = await this.inferenceEngineService.start(id, user_id);
+        } catch (error) {
+            throw error;
+        }
+        return res;
+    }
+
     async update(updateChatDto: UpdateChatDto): Promise<ChatEntity> {
         let chat: ChatDocument;
         try{
