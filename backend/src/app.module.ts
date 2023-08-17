@@ -10,6 +10,7 @@ import { RulesModule } from './rules/rules.module';
 import { ConclusionModule } from './conclusion/conclusion.module';
 import { ChatsModule } from './chats/chats.module';
 import { InferenceEngine } from './inference-engine/inference-engine.module';
+import { NlpModule } from './nlp/nlp.module';
 
 // global uri 
 @Module({
@@ -22,7 +23,8 @@ import { InferenceEngine } from './inference-engine/inference-engine.module';
     RulesModule,
     ConclusionModule,
     ChatsModule,
-    InferenceEngine
+    InferenceEngine,
+    NlpModule
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -5,7 +5,6 @@ export class AnswerChatDto{
     @ApiProperty({type: String, nullable: false, description: 'User ID'})
     user_id!: string;
 
-
-    @ApiPropertyOptional({type: AnswerConditionDto})
-    condition: AnswerConditionDto
+    @ApiPropertyOptional({type: String})
+    user_response: string;
 }

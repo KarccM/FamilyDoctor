@@ -28,4 +28,18 @@ export class ChatsController {
   start(@Body()user_id: string, @Param('id')id: string){
     return this.chatsService.start(id, user_id);
   }
+
+  @Get('/nlp')
+  async hello_nlp(){
+    return await this.chatsService.helloNLP()
+  }
+
+  @Post('/nlp')
+  async processNLP(){
+    let data = {
+      answer: 'أعاني من ارتفاع الحرارة',
+      labels: ['نعم يوجد حرارة', 'لا يوجد حرارة', 'لا أعرف']
+    }
+    return await this.chatsService.processNLP(data.answer, data.labels)
+  }
 }

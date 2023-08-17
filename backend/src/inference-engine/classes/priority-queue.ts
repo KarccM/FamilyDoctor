@@ -4,6 +4,7 @@ import { Goal } from "./goal";
 
 export class PriorityQueue {
     goals: Goal[]
+    lastQuestion: Condition;
 
     constructor(goals: Goal[]) {
         this.goals = goals;
@@ -35,6 +36,7 @@ export class PriorityQueue {
         let goal: Goal
         goal = this.getHead()[0];
         condition = goal.conclusion.topNConditions()[0];
+        this.lastQuestion = condition;
         return condition;
     }
 

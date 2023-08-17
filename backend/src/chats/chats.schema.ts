@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
+import { PriorityQueue } from 'src/inference-engine/classes/priority-queue';
 
 export type ChatDocument = HydratedDocument<Chat>;
 
@@ -11,7 +12,7 @@ export class Chat{
     user_id: string;
 
     @Prop({type: {}})
-    context: any;
+    context: PriorityQueue;
 
     // @Prop({type: Date})
 }

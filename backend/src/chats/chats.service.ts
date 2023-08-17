@@ -17,13 +17,15 @@ import { MedicalCondition as MedicalConditionClass } from 'src/inference-engine/
 import { PatientInfo as PatientInfoClass } from 'src/inference-engine/classes/patient-info';
 import { ConditionFactory } from 'src/shared/helpers/condition-factory';
 import { ChatResponse } from './entities/chat-response.entity';
+import { NlpService } from 'src/nlp/nlp.service';
 
 @Injectable()
 export class ChatsService {
     constructor(
         @InjectModel(Chat.name) private chatModel: Model<ChatDocument>,
         private inferenceEngineService: InferenceEngineService,
-        private conditionsService: ConditionsService
+        private conditionsService: ConditionsService,
+        private readonly nlpService: NlpService
         ){}
 
     async create(createChatDto: CreateChatDto): Promise<ChatEntity> {
@@ -57,6 +59,16 @@ export class ChatsService {
         return await chat.save();
     }
 
+    async helloNLP(){
+        let res= await this.nlpService.hello()
+        return res
+    }
+
+    async processNLP(answer, labels){
+        let res = await this.nlpService.process_answer(answer, labels);
+        return res;
+    }
+
     async answer(answerChatDto: AnswerChatDto, id: string): Promise<ChatResponse> {
         let chat: ChatDocument;
         let response: ChatResponse;
@@ -64,17 +76,15 @@ export class ChatsService {
         try{
             chat = await this.chatModel.findOne({_id: id, user_id: answerChatDto.user_id})
             if(chat == null || chat == undefined) {throw new Error('Chat does not exist')}
-            let condition = await this.conditionsService.findOneByName(answerChatDto.condition.name);
-            if (condition == null || condition == undefined) {throw new BadRequestException(`Condition ${answerChatDto.condition.name} does not exist`)}
+            let condition = await this.conditionsService.findOneByName(chat.context.lastQuestion.name);
+            if (condition == null || condition == undefined) {throw new BadRequestException(`Condition ${chat.context.lastQuestion.name} does not exist`)}
             let condInstance: ConditionClass;
             condInstance = ConditionFactory(condition)
-            condInstance.answer = answerChatDto.condition.answer;
-            let context = {}
+            // condInstance.answer = answerChatDto.condition.answer;
             let pqueue: PriorityQueue = await this.inferenceEngineService.init();
             pqueue.updateNodes(condInstance);
             conditionRes = pqueue.askQuestion()
-            context = pqueue;
-            chat.context = context;
+            chat.context = pqueue;
         } catch (error) {
             throw error
         }
@@ -105,5 +115,9 @@ export class ChatsService {
         } catch (error) {
             throw new NotFoundException(`Chat with id:${id} and user_id:${user_id} Not Found!`)
         }
+    }
+
+    async processUserAnswer(answer: string, context: any){
+
     }
 }

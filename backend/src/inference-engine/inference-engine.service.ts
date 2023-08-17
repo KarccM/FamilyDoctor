@@ -67,7 +67,9 @@ export class InferenceEngineService {
         return res;
     }
 
-    async initFromKB(context: any){
+    async processAnswer(condition){}
 
+    async initFromKB(context: any){
+        console.log(context)
     }
 }
