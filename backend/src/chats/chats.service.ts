@@ -57,12 +57,12 @@ export class ChatsService {
         return await chat.save();
     }
 
-    async answer(answerChatDto: AnswerChatDto): Promise<ChatResponse> {
+    async answer(answerChatDto: AnswerChatDto, id: string): Promise<ChatResponse> {
         let chat: ChatDocument;
         let response: ChatResponse;
         let conditionRes;
         try{
-            chat = await this.chatModel.findOne({_id: answerChatDto._id, user_id: answerChatDto.user_id})
+            chat = await this.chatModel.findOne({_id: id, user_id: answerChatDto.user_id})
             if(chat == null || chat == undefined) {throw new Error('Chat does not exist')}
             let condition = await this.conditionsService.findOneByName(answerChatDto.condition.name);
             if (condition == null || condition == undefined) {throw new BadRequestException(`Condition ${answerChatDto.condition.name} does not exist`)}

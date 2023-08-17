@@ -17,10 +17,10 @@ export class ChatsController {
     return this.chatsService.create(createChatDto);
   }
 
-  @Post('/chat')
+  @Post('/chat/:id')
   @ApiResponse({type: ChatResponse})
-  chat(@Body() answerChatDto: AnswerChatDto){
-    return this.chatsService.answer(answerChatDto)
+  chat(@Body() answerChatDto: AnswerChatDto, @Param('id')id: string){
+    return this.chatsService.answer(answerChatDto, id)
   }
 
   @Get('/chat/:id')
