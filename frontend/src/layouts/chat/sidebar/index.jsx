@@ -5,6 +5,7 @@ import { useSearchParams } from 'react-router-dom';
 
 export default function ChatSideBar() {
   const [searchParams, setSearchParams] = useSearchParams();
+  console.log('searchParams :>> ', searchParams.get('chat'));
   let chatService = useChat();
   function chatSelected(chat) {
     setSearchParams({ chat });
@@ -28,7 +29,7 @@ export default function ChatSideBar() {
         {
           chatService.chats && chatService.chats.map(chat =>
             <Box key={chat}>
-              <Button fullWidth onClick={() => chatSelected(chat)}>
+              <Button fullWidth variant={chat === searchParams.get('chat') ? 'contained' : 'text'} onClick={() => chatSelected(chat)}>
                 {chat}
               </Button>
             </Box>

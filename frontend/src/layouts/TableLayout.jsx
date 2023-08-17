@@ -4,9 +4,8 @@ import Iconify from '../components/Iconify';
 import Page from '../components/Page';
 import Breadcrumbs from '../components/Breadcrumbs';
 import usePageTitle from '../hooks/usePageTitle';
-import Authorize from '../components/Authorize';
 
-export default function TableLayout({ table, filtersForm = null, config, children }) {
+export default function TableLayout({ table, filtersForm = null, config = {}, children }) {
   const { title } = usePageTitle();
   return <Page title={title}>
     <Container>
@@ -19,16 +18,14 @@ export default function TableLayout({ table, filtersForm = null, config, childre
         <Typography variant="h4">
           {title}
         </Typography>
-        <Authorize permission={config.permission.add} >
-          <Button
-            variant="contained"
-            component={RouterLink}
-            to={`/${title}/add`}
-            startIcon={<Iconify icon="eva:plus-fill" />}
-          >
-            {config.creationLabel}
-          </Button>
-        </Authorize>
+        <Button
+          variant="contained"
+          component={RouterLink}
+          to={`/${title}/add`}
+          startIcon={<Iconify icon="eva:plus-fill" />}
+        >
+          إنشاء
+        </Button>
       </Stack>
       <Breadcrumbs />
       {filtersForm}

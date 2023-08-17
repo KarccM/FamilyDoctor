@@ -105,12 +105,12 @@ export default function Form() {
             {
               fields.map((field, index) =>
                 <React.Fragment key={field.id}>
-                  <Grid item xs={5}>
+                  <Grid item xs={10}>
                     <CustomInput label='الاجابة' name={`answers.${index}.question`} control={control} errors={errors} />
                   </Grid>
-                  <Grid item xs={5}>
+                  {/* <Grid item xs={5}>
                     <CustomInput label='السكور' name={`answers.${index}.score`} control={control} errors={errors} type="number" />
-                  </Grid>
+                  </Grid> */}
                   <Grid item xs={2}>
                     <Button fullWidth onClick={() => remove(index)}>حذف</Button>
                   </Grid>

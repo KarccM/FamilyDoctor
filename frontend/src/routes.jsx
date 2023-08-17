@@ -4,6 +4,7 @@ import DashboardLayout from "./layouts/dashboard";
 import AddSymptom from "./screens/symptoms/add";
 import EditSymptom from "./screens/symptoms/edit";
 import Dashboard from "./screens";
+import Symptoms from "./screens/symptoms";
 
 
 const useRouter = () => {
@@ -60,7 +61,7 @@ const useRouter = () => {
                             crumb: () => <Link to="/symptoms">الاعراض</Link>,
                         },
                         children: [
-                            { index: true, element: <>الاعراض</> },
+                            { index: true, element: <Symptoms /> },
                             {
                                 path: "add",
                                 element: <AddSymptom />,
