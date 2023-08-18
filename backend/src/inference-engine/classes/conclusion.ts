@@ -27,7 +27,7 @@ export abstract class Conclusion{
         let prominantConditions : {condition: Condition, value: number}[] = []
         this.rules.forEach(rule => {
             rule.conditions.forEach(cond => {
-                if(cond.answer == undefined){
+                if(cond.user_answer == undefined){
                     let pc = prominantConditions.find((c) => c.condition.name == cond.name, prominantConditions);
                     if(pc != undefined){
                         pc.value += 1;
@@ -39,8 +39,7 @@ export abstract class Conclusion{
         });
         return prominantConditions.sort((pc1, pc2) => compareFn(pc1.value, pc2.value, 'desc'))
                                         .map(c=> c.condition)
-                                        .slice(0,n)
-        // let sorted = prominantConditions.map(c=> c.condition );
+                                        .slice(0,n);
     }
 
     topNRules(): Rule[]{

@@ -17,9 +17,14 @@ export class RulesService {
     try{
       await Promise.all(
         createRuleDto.conditions.map(async (c) => {
-        const cond = await this.conditionService.findOne(c);
-        console.log(`In RulesService: ${cond}`)
-        if (cond) {console.log(`cond available ${cond._id}`); conditions.push(cond); return cond;}
+        const cond = await this.conditionService.findOne(c.condition);
+        // console.log(`In RulesService: ${cond}`)
+        if (cond == null || cond == undefined) throw new BadRequestException(`Condition with id: ${c.condition} Not Found`)
+        if (cond) {
+          cond.value = c.value;
+          conditions.push(cond); 
+          return cond;
+        }
     }));
     // console.log(`This is the conditions object  ${conditions}`)
     conditions.forEach(e => {console.log('this is e', e)})
@@ -28,7 +33,7 @@ export class RulesService {
     }
     // let rule = new Rule();
     // rule.conditions = conditions;
-    return {conditions: conditions.map(c => c._id)};
+    return {conditions: conditions};
   }
 
 
@@ -37,16 +42,16 @@ export class RulesService {
       let conditions = []
       conditions = await Promise.all(
         createRuleDto.conditions.map(async (c) => {
-          try{
-          let c_id = new ObjectId(c);
-        } catch (error) {
-          throw new BadRequestException(`Conditions ID not valid`);
-        }
-          return await this.conditionService.findOne(c);
-        })
-      )
-      console.log(`I am here in addRule ${conditions}`)
-      conditions = conditions.map(c => {return c._id});
+          let condition = await this.conditionService.findOne(c.condition);
+          if (condition == undefined || condition == null) throw new BadRequestException(`Condition with id: ${c.condition} Not Found`);
+          else{
+            condition.value = c.value;
+            conditions.push(condition);
+            return condition;
+          }
+        }));
+      // console.log(`I am here in addRule ${conditions}`)
+      // conditions = conditions.map(c => {return c._id});
       return {conditions: conditions}
     } catch (error) {
       console.error(error)

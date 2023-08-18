@@ -73,13 +73,16 @@ export class ChatsService {
 
     async process_answer(answer: string, context: any){
         try{
-        let condition = await this.conditionsService.findOneByName(context.lastQuestion.name);
-        if (condition == null || condition == undefined) throw new InternalServerErrorException(`Condition ${context.lastQuestion.name} Not Found in DB`)
+        // let condition = await this.conditionsService.findOneByName(context.lastQuestion.name);
+        // if (condition == null || condition == undefined) throw new InternalServerErrorException(`Condition ${context.lastQuestion.name} Not Found in DB`)
         let condInstance: ConditionClass;
-        condInstance = ConditionFactory(condition);
+        debugger;
+        condInstance = ConditionFactory(context.lastQuestion);
         let label = await this.nlpService.process_answer(answer, condInstance.values);
         condInstance.setAnswer(label);
+        debugger;
         let pqueue = await this.inferenceEngineService.initFromHistory(context);
+        // console.log(`This is CondInstance in process answer ${condInstance}`)
         pqueue.updateNodes(condInstance);
         return pqueue
         } catch (error) { throw error }

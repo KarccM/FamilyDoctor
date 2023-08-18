@@ -1,6 +1,14 @@
-import { ApiPropertyOptional } from '@nestjs/swagger/dist';
+import { ApiPropertyOptional, ApiProperty } from '@nestjs/swagger/dist';
+import { YesNoValues } from 'src/shared/Utils/constants/constants';
 
+export class CreateRuleConditionDto{
+    @ApiProperty({type: String, required: true, description: 'Condition ID'})
+    condition: string;
+
+    @ApiPropertyOptional({type: String, required: true, description: 'Condition Value', default: YesNoValues[0]})
+    value: string;
+}
 export class CreateRuleDto {
-    @ApiPropertyOptional({ type: [String], required: true, description: 'Conditions IDs', nullable: false })
-    conditions: string[];
+    @ApiProperty({ type: [CreateRuleConditionDto], required: true, description: 'Conditions (IDs, Values)'})
+    conditions: CreateRuleConditionDto[];
 }

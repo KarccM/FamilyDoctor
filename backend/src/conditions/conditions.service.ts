@@ -2,10 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { CreateConditionDto } from './dto/create-condition.dto';
 import { UpdateConditionDto } from './dto/update-condition.dto';
 import { InjectModel, InjectConnection } from '@nestjs/mongoose';
-import { Condition, ConditionDocument, Symptom,  } from './conditions.schema';
+import { Condition, ConditionDocument  } from './conditions.schema';
 import { Model } from 'mongoose';
 import { BadRequestException } from '@nestjs/common/exceptions';
-import { ConditionType } from 'src/shared/Utils/constants/enums';
+import { ConditionType, ConditionValuesType } from 'src/shared/Utils/constants/enums';
+import { YesNoValues } from 'src/shared/Utils/constants/constants';
 
 @Injectable()
 export class ConditionsService {
@@ -20,24 +21,25 @@ export class ConditionsService {
     }
     condition = await this.conditionModel.create({
       name: createConditionDto.name,
-      values: createConditionDto.values,
+      values: createConditionDto.conditionValuesType == ConditionValuesType.YesNoValues ? YesNoValues: createConditionDto.values,
       conditionType: ConditionType[createConditionDto.conditionType],
-      question: createConditionDto.question
+      question: createConditionDto.question,
+      conditionValuesType: ConditionValuesType[createConditionDto.conditionValuesType]
     });
 
     return condition
   }
 
   async findAllSymptoms(): Promise<Condition[]> {
-    return await this.conditionModel.discriminators[ConditionType.Symptom].find({});
+    return await this.conditionModel.find({conditionType: ConditionType.Symptom});
   }
 
   async findAllMedicalConditions(): Promise<Condition[]> {
-    return await this.conditionModel.discriminators[ConditionType.MedicalCondition].find({});
+    return await this.conditionModel.find({conditionType: ConditionType.MedicalCondition});
   }
 
   async findAllPatientInfo(): Promise<Condition[]> {
-    return await this.conditionModel.discriminators[ConditionType.PatientInfo].find({});
+    return await this.conditionModel.find({conditionType: ConditionType.PatientInfo});
   }
 
 
@@ -53,6 +55,8 @@ export class ConditionsService {
     return await this.conditionModel.findOne({name: name})
   }
 
+  // async checkValueValidity()
+
   async update(id: string, updateConditionDto: UpdateConditionDto): Promise<Condition> {
     let condition;
     try{
@@ -60,6 +64,7 @@ export class ConditionsService {
       if(condition) {
       if (updateConditionDto?.name) condition.name = updateConditionDto.name;
       if (updateConditionDto?.question) condition.question = updateConditionDto.question;
+      if (updateConditionDto?.conditionValuesType) condition.conditionValuesType = updateConditionDto.conditionValuesType
       if (updateConditionDto?.values) condition.values = updateConditionDto.values;
       }
   } catch(error) {

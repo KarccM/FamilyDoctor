@@ -1,3 +1,4 @@
+import { DoNotKnowValue } from "src/shared/Utils/constants/constants";
 import { Condition } from "./condition";
 export var INF = 999;
 
@@ -17,6 +18,7 @@ export class Rule{
     }
 
     updateRule(visitedCondition: Condition): void{
+        console.log('this is the conditions '+ this.conditions)
         this.conditions = this.conditions.map((condition) => {
             if(condition.name === visitedCondition.name) {
                 this.updateCondition(condition, visitedCondition);
@@ -29,12 +31,12 @@ export class Rule{
     }
 
     updateCondition(condition:Condition, visitedCondition:Condition){
-        condition.setAnswer(visitedCondition.answer);
-        if(condition.answer === 'yes') //TODO: make this more general by considering which value is the true value.
+        condition.setAnswer(visitedCondition.user_answer);
+        if(condition.user_answer == condition.value) 
         {
             this.trueCondCount += 1;
-        } else if (condition.answer === 'no') {
-            this.trueCondCount = -INF;
+        } else if (condition.user_answer != DoNotKnowValue || condition.user_answer != condition.value) {
+            this.trueCondCount = - INF;
             this.ruleValidity = false;
         }
     }

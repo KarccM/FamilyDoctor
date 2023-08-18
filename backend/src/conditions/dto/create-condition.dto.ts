@@ -1,17 +1,26 @@
-import { ApiPropertyOptional } from '@nestjs/swagger/dist'
-import { ConditionType } from 'src/shared/Utils/constants/enums';
+import { ApiProperty } from '@nestjs/swagger/dist'
+import { ConditionType, ConditionValuesType } from 'src/shared/Utils/constants/enums';
 
 
 export class CreateConditionDto {
-    @ApiPropertyOptional({type: String, required: true})
+    @ApiProperty({type: String, required: true})
     name: string;
 
-    @ApiPropertyOptional({type: String, required: true})
+    @ApiProperty({type: String, required: true})
     question: string;
 
-    @ApiPropertyOptional({required: true, enum: ConditionType, example: Object.keys(ConditionType)})
+    @ApiProperty({required: true, enum: ConditionType, example: Object.keys(ConditionType)})
     conditionType: string;
 
-    @ApiPropertyOptional({type: [], isArray: true, required: true})
+    @ApiProperty({
+        required: true,
+        enum: ConditionValuesType, 
+        example: Object.keys(ConditionValuesType), 
+        description: 'Values\'s Type for the Condition', 
+        default: ConditionValuesType.YesNoValues})
+    conditionValuesType: string;
+
+
+    @ApiProperty({type: [], isArray: true, required: true})
     values: [];
 }
