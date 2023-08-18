@@ -25,8 +25,8 @@ export class ChatsController {
 
   @Get('/chat/:id')
   @ApiResponse({type: ChatResponse})
-  start(@Body()user_id: string, @Param('id')id: string){
-    return this.chatsService.start(id, user_id);
+  start(@Param('id')id: string){
+    return this.chatsService.start(id);
   }
 
   @Get('/nlp')
@@ -37,7 +37,7 @@ export class ChatsController {
   @Post('/nlp')
   async processNLP(){
     let data = {
-      answer: 'أعاني من ارتفاع الحرارة',
+      answer: 'لا أعاني من ارتفاع الحرارة',
       labels: ['نعم يوجد حرارة', 'لا يوجد حرارة', 'لا أعرف']
     }
     return await this.chatsService.processNLP(data.answer, data.labels)

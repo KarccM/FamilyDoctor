@@ -11,6 +11,7 @@ import { ConclusionModule } from './conclusion/conclusion.module';
 import { ChatsModule } from './chats/chats.module';
 import { InferenceEngine } from './inference-engine/inference-engine.module';
 import { NlpModule } from './nlp/nlp.module';
+import { SeederService } from './seeder/seeder.service';
 
 // global uri 
 @Module({
@@ -27,6 +28,6 @@ import { NlpModule } from './nlp/nlp.module';
     NlpModule
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, SeederService],
 })
 export class AppModule {}

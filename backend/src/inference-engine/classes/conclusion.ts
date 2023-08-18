@@ -6,11 +6,13 @@ export abstract class Conclusion{
     name: string;
     priority: number;
     rules: Rule[];
+    conclusionType: string;
 
-    constructor(name: string, rules: Rule[], priority: number){
+    constructor(name: string, rules: Rule[], priority: number, concType: string){
         this.name = name;
         this.rules = rules;
         this.priority = priority;
+        this.conclusionType = concType;
     }
 
     updateRules(visitedCondition: Condition) {

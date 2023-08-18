@@ -9,6 +9,7 @@ export class PriorityQueue {
     constructor(goals: Goal[]) {
         this.goals = goals;
         this.sortNodes();
+        this.lastQuestion = null;
     }
 
     getHead(n = 1){

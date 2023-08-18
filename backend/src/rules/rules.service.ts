@@ -45,6 +45,7 @@ export class RulesService {
           return await this.conditionService.findOne(c);
         })
       )
+      console.log(`I am here in addRule ${conditions}`)
       conditions = conditions.map(c => {return c._id});
       return {conditions: conditions}
     } catch (error) {
