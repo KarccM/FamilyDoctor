@@ -73,6 +73,9 @@ export class Condition {
 
   @Prop({ type: String, required: false })
   value?: string;
+
+  @Prop({ type: String, required: false })
+  user_answer?: string;
 }
 
 export class ConditionTypes {
@@ -96,6 +99,9 @@ export class ConditionTypes {
 
   @Prop({ type: String, required: false })
   value?: string;
+
+  @Prop({ type: String, required: false })
+  user_answer?: string;
 }
 
 export const ConditionTypesSchema =

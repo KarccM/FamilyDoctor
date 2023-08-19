@@ -29,7 +29,7 @@ export class PriorityQueue {
     this.goals.forEach((goal) => {
       goal.conclusion.updateRules(visitedCondition);
       this.gotAConclusion = goal.conclusion.conclusionFired;
-      if(this.gotAConclusion) this.acheivedConcluion = goal.conclusion;
+      if (this.gotAConclusion) this.acheivedConcluion = goal.conclusion;
     });
     this.sortNodes();
   }
@@ -47,8 +47,8 @@ export class PriorityQueue {
     return condition;
   }
 
-  getResponse(){
-    if(this.gotAConclusion){
+  getResponse() {
+    if (this.gotAConclusion) {
       return this.acheivedConcluion;
     }
     return this.askQuestion();

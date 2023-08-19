@@ -7,6 +7,7 @@ import { PatientInfo } from 'src/inference-engine/classes/patient-info';
 export function ConditionFactory(condition: Condition): ConditionClass {
   let condInstance: ConditionClass = null;
   let condType = condition.conditionType;
+  let ua = condition.user_answer ?? null;
   switch (condType) {
     case ConditionType.Symptom:
       condInstance = new Symptom(
@@ -14,6 +15,7 @@ export function ConditionFactory(condition: Condition): ConditionClass {
         condition.question,
         condition.values,
         condition.conditionValuesType,
+        ua,
       );
       condInstance.value = condition.value != null ? condition.value : null;
       break;
@@ -23,6 +25,7 @@ export function ConditionFactory(condition: Condition): ConditionClass {
         condition.question,
         condition.values,
         condition.conditionValuesType,
+        ua,
       );
       condInstance.value = condition.value != null ? condition.value : null;
       break;
@@ -32,6 +35,7 @@ export function ConditionFactory(condition: Condition): ConditionClass {
         condition.question,
         condition.values,
         condition.conditionValuesType,
+        ua,
       );
       condInstance.value = condition.value != null ? condition.value : null;
       break;

@@ -11,9 +11,9 @@ export class Symptom extends Condition {
     question: string,
     values: any[],
     cvTypes: string = ConditionValuesType.YesNoValues,
+    user_answer = null,
   ) {
     if (cvTypes == ConditionValuesType.YesNoValues) values = YesNoValues;
-    super(name, question, values, cvTypes, ConditionType.Symptom);
-    this.user_answer = undefined;
+    super(name, question, values, cvTypes, ConditionType.Symptom, user_answer);
   }
 }

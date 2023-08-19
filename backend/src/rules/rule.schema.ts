@@ -19,6 +19,18 @@ export type RuleDocument = HydratedDocument<Rule>;
 export class Rule {
   @Prop({ type: [], required: true })
   conditions: Condition[];
+
+  @Prop({ type: Boolean, required: false, default: null })
+  ruleValidity?: boolean;
+
+  @Prop({ type: Boolean, required: false, default: null })
+  ruleFired?: boolean;
+
+  @Prop({ type: Number, required: false, default: null })
+  trueCondCount?: number;
+
+  @Prop({ type: Number, required: false, default: null })
+  ruleWeight?: number;
 }
 
 export const RuleSchema = SchemaFactory.createForClass(Rule);

@@ -146,14 +146,20 @@ export class ChatsService {
       throw error;
     }
     await chat.save();
-    if(typeof(Res) == ConditionClass.name){
+    if (Res instanceof ConditionClass) {
       response = {
-      condition: Res,
-      context: chat.context,
-      _id: chat.id,
-      user_id: chat.user_id,
-    }}else {
-      response = {conclusion: Res, context: chat.context, _id: chat.id, user_id: chat.user_id}
+        condition: Res,
+        context: chat.context,
+        _id: chat.id,
+        user_id: chat.user_id,
+      };
+    } else {
+      response = {
+        conclusion: Res,
+        context: chat.context,
+        _id: chat.id,
+        user_id: chat.user_id,
+      };
     }
     return response;
   }

@@ -3,7 +3,7 @@ export class Condition {
   question: string;
   values: any[];
   value: any;
-  user_answer: any;
+  user_answer: any = null;
   conditionValuesType: string;
   conditionType: string;
 
@@ -13,12 +13,14 @@ export class Condition {
     values: any[],
     cvTypes: string,
     cType: string,
+    user_answer = null,
   ) {
     this.name = name;
     this.question = question;
     this.values = values;
     this.conditionValuesType = cvTypes;
     this.conditionType = cType;
+    this.user_answer = user_answer;
   }
 
   // toString(){

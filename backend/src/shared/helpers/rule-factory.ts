@@ -10,6 +10,19 @@ export function RuleFactory(rule: Rule): RuleClass {
     let condInstance = ConditionFactory(c);
     condInstances.push(condInstance);
   });
-  ruleInstance = new RuleClass(condInstances);
+  if (
+    rule.ruleWeight != null &&
+    rule.ruleValidity != null &&
+    rule.trueCondCount != null &&
+    rule.ruleFired != null
+  ) {
+    ruleInstance = new RuleClass(
+      condInstances,
+      rule.ruleWeight,
+      rule.ruleFired,
+      rule.trueCondCount,
+      rule.ruleValidity,
+    );
+  } else ruleInstance = new RuleClass(condInstances);
   return ruleInstance;
 }

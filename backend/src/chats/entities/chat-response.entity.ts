@@ -18,7 +18,9 @@ export class ChatResponse {
   })
   condition?: Condition;
 
-  @ApiPropertyOptional({type: Conclusion, description: 'The current Conclusion'})
+  @ApiPropertyOptional({
+    type: Conclusion,
+    description: 'The current Conclusion',
+  })
   conclusion?: Conclusion;
-
 }

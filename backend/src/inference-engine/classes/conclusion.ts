@@ -31,7 +31,7 @@ export abstract class Conclusion {
     let prominantConditions: { condition: Condition; value: number }[] = [];
     this.rules.forEach((rule) => {
       rule.conditions.forEach((cond) => {
-        if (cond.user_answer == undefined) {
+        if (cond.user_answer == undefined || cond.user_answer == null) {
           let pc = prominantConditions.find(
             (c) => c.condition.name == cond.name,
             prominantConditions,

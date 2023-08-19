@@ -10,13 +10,19 @@ export class Rule {
   ruleValidity: boolean;
   ruleFired: boolean;
 
-  constructor(conditions: Condition[]) {
+  constructor(
+    conditions: Condition[],
+    ruleWeight = -INF,
+    ruleFired = false,
+    trueCondCount = 0,
+    ruleValidity = true,
+  ) {
     this.conditions = conditions;
     this.ruleLength = this.conditions.length;
-    this.trueCondCount = 0;
-    this.ruleWeight = -INF;
-    this.ruleValidity = true;
-    this.ruleFired = false;
+    this.trueCondCount = trueCondCount;
+    this.ruleWeight = ruleWeight;
+    this.ruleValidity = ruleValidity;
+    this.ruleFired = ruleFired;
   }
 
   updateRule(visitedCondition: Condition): void {
@@ -24,7 +30,7 @@ export class Rule {
     this.conditions = this.conditions.map((condition) => {
       if (condition.name === visitedCondition.name) {
         this.updateCondition(condition, visitedCondition);
-        return condition; 
+        return condition;
       }
       return condition;
     });
