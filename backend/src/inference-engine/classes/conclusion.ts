@@ -9,17 +9,20 @@ export abstract class Conclusion {
   priority: number;
   rules: Rule[];
   conclusionType: string;
+  conclusionFired: boolean;
 
   constructor(name: string, rules: Rule[], priority: number, concType: string) {
     this.name = name;
     this.rules = rules;
     this.priority = priority;
     this.conclusionType = concType;
+    this.conclusionFired = false;
   }
 
   updateRules(visitedCondition: Condition) {
     this.rules.forEach((rule) => {
       rule.updateRule(visitedCondition);
+      this.conclusionFired = rule.ruleFired;
     });
     this.rules = this.rules.filter((r) => r.ruleValidity);
   }

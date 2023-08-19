@@ -1,4 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { Conclusion } from 'src/conclusion/entities/conclusion.entity';
 import { Condition } from 'src/conditions/entities/condition.entity';
 
 export class ChatResponse {
@@ -11,9 +12,13 @@ export class ChatResponse {
   @ApiProperty({ description: 'Context - PQueue of the current chat' })
   context: any;
 
-  @ApiProperty({
+  @ApiPropertyOptional({
     type: Condition,
     description: 'Next Condition to Ask (Currently)',
   })
-  condition: Condition;
+  condition?: Condition;
+
+  @ApiPropertyOptional({type: Conclusion, description: 'The current Conclusion'})
+  conclusion?: Conclusion;
+
 }

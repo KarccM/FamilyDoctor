@@ -127,7 +127,7 @@ export class ChatsService {
   ): Promise<ChatResponse> {
     let chat: ChatDocument;
     let response: ChatResponse;
-    let conditionRes;
+    let Res;
     try {
       chat = await this.chatModel.findOne({
         _id: id,
@@ -140,18 +140,21 @@ export class ChatsService {
         answerChatDto.user_response,
         chat.context,
       );
-      conditionRes = context.askQuestion();
+      Res = context.getResponse();
       chat.context = context;
     } catch (error) {
       throw error;
     }
     await chat.save();
-    response = {
-      condition: conditionRes,
+    if(typeof(Res) == ConditionClass.name){
+      response = {
+      condition: Res,
       context: chat.context,
       _id: chat.id,
       user_id: chat.user_id,
-    };
+    }}else {
+      response = {conclusion: Res, context: chat.context, _id: chat.id, user_id: chat.user_id}
+    }
     return response;
   }
 

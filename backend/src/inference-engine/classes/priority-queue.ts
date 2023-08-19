@@ -1,15 +1,18 @@
-import { compareFn } from './conclusion';
+import { Conclusion, compareFn } from './conclusion';
 import { Condition } from './condition';
 import { Goal } from './goal';
 
 export class PriorityQueue {
   goals: Goal[];
   lastQuestion: Condition;
+  gotAConclusion: boolean;
+  acheivedConcluion: Conclusion;
 
   constructor(goals: Goal[]) {
     this.goals = goals;
     this.sortNodes();
     this.lastQuestion = null;
+    this.gotAConclusion = false;
   }
 
   getHead(n = 1) {
@@ -25,6 +28,8 @@ export class PriorityQueue {
   updateNodes(visitedCondition: Condition) {
     this.goals.forEach((goal) => {
       goal.conclusion.updateRules(visitedCondition);
+      this.gotAConclusion = goal.conclusion.conclusionFired;
+      if(this.gotAConclusion) this.acheivedConcluion = goal.conclusion;
     });
     this.sortNodes();
   }
@@ -40,6 +45,13 @@ export class PriorityQueue {
     condition = goal.conclusion.topNConditions()[0];
     this.lastQuestion = condition;
     return condition;
+  }
+
+  getResponse(){
+    if(this.gotAConclusion){
+      return this.acheivedConcluion;
+    }
+    return this.askQuestion();
   }
 
   toString() {
