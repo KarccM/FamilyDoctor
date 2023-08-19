@@ -17,6 +17,5 @@ export class SeederService {
     aliases: ['seed:KB', 'seed:kb'],
   })
   async seed() {
-    log(`THIS IS SO MUCH FUN I LOVE IT!!!!!!!!!!!!!`);
-  }
+    log(`THIS IS SO MUCH FUN I LOVE IT!!!!!!!!!!!!!`);  }
 }
