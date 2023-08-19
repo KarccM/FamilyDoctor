@@ -5,7 +5,6 @@ import { useSearchParams } from 'react-router-dom';
 
 export default function ChatSideBar() {
   const [searchParams, setSearchParams] = useSearchParams();
-  console.log('searchParams :>> ', searchParams.get('chat'));
   let chatService = useChat();
   function chatSelected(chat) {
     setSearchParams({ chat });

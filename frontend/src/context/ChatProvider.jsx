@@ -1,6 +1,8 @@
 import { createContext, useContext, useState } from "react";
 import useLocalStorage from "../hooks/useLocalStorage";
-import { v4 as uuidv4 } from 'uuid';
+import axios from 'axios';
+import { useMutation } from "react-query";
+import { post } from "../api/axios";
 
 const ChatContext = createContext()
 
@@ -8,10 +10,21 @@ export default function ChatProvider(props) {
   let { readFromLocalStorage, writeOnLocalStorage, deleteFromLocalStorage } = useLocalStorage()
   const [chats, setChats] = useState(readFromLocalStorage('chats', 'object') ?? []);
 
+  const { mutate, isError, isLoading } = useMutation(
+    () => post('chats', {}),
+    {
+      onSuccess: (data) => {
+        writeOnLocalStorage('chats', [...chats, data.data._id], 'object');
+        setChats(prev => [...prev, data.data._id]);
+      },
+      onError: (error) => {
+        console.log('error :>> ', error);
+      },
+    }
+  );
+
   function createNewChat() {
-    let newChat = uuidv4();
-    writeOnLocalStorage('chats', [...chats, newChat], 'object');
-    setChats(prev => [...prev, newChat])
+    mutate()
     return { newChat, chats: [...chats, newChat] };
   }
 
@@ -24,6 +37,8 @@ export default function ChatProvider(props) {
     chats,
     createNewChat,
     clearAllChats,
+    mutateLoading: isLoading,
+    mutateError: isError,
   }} {...props} />
 }
 

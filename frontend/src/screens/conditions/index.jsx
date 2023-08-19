@@ -1,7 +1,11 @@
 import React from "react"
 import Table from '../../components/table';
-import TableLayout from "../../layouts/TableLayout";
 import { tableColumns } from './data';
+import { Button, Container, Stack, Typography } from '@mui/material';
+import { Link as RouterLink } from 'react-router-dom';
+import Iconify from '../../components/Iconify';
+import Page from '../../components/Page';
+import Breadcrumbs from '../../components/Breadcrumbs';
 
 export default function Symptoms({ params, ...rest }) {
   const columns = React.useMemo(() => tableColumns, []);
@@ -31,6 +35,29 @@ export default function Symptoms({ params, ...rest }) {
   />
 
   return (
-    <TableLayout table={table} {...rest} />
+    <Page title="الاعراض">
+      <Container>
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
+          mb={1}
+        >
+          <Typography variant="h4">
+            الاعراض
+          </Typography>
+          <Button
+            variant="contained"
+            component={RouterLink}
+            to={`/conditions/add`}
+            startIcon={<Iconify icon="eva:plus-fill" />}
+          >
+            إنشاء
+          </Button>
+        </Stack>
+        <Breadcrumbs />
+        {table}
+      </Container>
+    </Page>
   );
 }

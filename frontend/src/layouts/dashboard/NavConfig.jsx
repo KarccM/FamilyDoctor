@@ -12,7 +12,7 @@ const navConfig = [
     },
     {
         title: 'الاعراض',
-        path: '/symptoms',
+        path: '/conditions',
         icon: getIcon('maki:doctor')
     },
 ];

@@ -1,10 +1,10 @@
 import * as React from "react";
 import { Link, createBrowserRouter } from "react-router-dom";
 import DashboardLayout from "./layouts/dashboard";
-import AddSymptom from "./screens/symptoms/add";
-import EditSymptom from "./screens/symptoms/edit";
+import AddCondition from "./screens/conditions/add";
+import EditCondition from "./screens/conditions/edit";
 import Dashboard from "./screens";
-import Symptoms from "./screens/symptoms";
+import Conditions from "./screens/conditions";
 
 
 const useRouter = () => {
@@ -56,15 +56,15 @@ const useRouter = () => {
                         ],
                     },
                     {
-                        path: "symptoms",
+                        path: "conditions",
                         handle: {
-                            crumb: () => <Link to="/symptoms">الاعراض</Link>,
+                            crumb: () => <Link to="/conditions">الاعراض</Link>,
                         },
                         children: [
-                            { index: true, element: <Symptoms /> },
+                            { index: true, element: <Conditions /> },
                             {
                                 path: "add",
-                                element: <AddSymptom />,
+                                element: <AddCondition />,
                                 handle: {
                                     crumb: () => (
                                         <Link to="/add">عرض جديد</Link>
@@ -73,7 +73,7 @@ const useRouter = () => {
                             },
                             {
                                 path: ":id/edit",
-                                element: <EditSymptom />,
+                                element: <EditCondition />,
                                 handle: {
                                     crumb: () => (
                                         <Link to="/:id/edit">تعديل العرض</Link>

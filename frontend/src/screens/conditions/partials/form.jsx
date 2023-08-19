@@ -3,8 +3,8 @@ import CustomInput from "../../../components/form/TextField";
 import SubmitLayout from '../../../components/SubmitLayout';
 import { successWithCustomMessage } from "../../../utils/notifications";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Grid, Stack } from "@mui/material";
-import { useFieldArray, useForm } from "react-hook-form";
+import { Button, FormControl, Grid, InputLabel, MenuItem, Select, Slider, Stack } from "@mui/material";
+import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useParams } from "react-router-dom";
 import { config } from '../config';
@@ -36,7 +36,7 @@ export default function Form() {
     defaultValues: {
       name: '',
       question: '',
-      answers: [{
+      values: [{
         answer: "",
         score: 0,
       }]
@@ -44,7 +44,7 @@ export default function Form() {
   });
 
   const { fields, append, remove } = useFieldArray({
-    name: 'answers',
+    name: 'values',
     control
   })
 
@@ -78,12 +78,12 @@ export default function Form() {
     }
   );
 
-  const onSubmitForm = ({ name, question, answers }) => {
-    console.log('answers :>> ', answers);
+  const onSubmitForm = ({ name, question, values }) => {
+    console.log('values :>> ', values);
     // mutate({
     //   name,
     //   question,
-    //   answers,
+    //   values,
     // })
   };
 
@@ -102,15 +102,66 @@ export default function Form() {
             <Grid item xs={12}>
               <CustomInput label='السؤال' name={`question`} control={control} errors={errors} />
             </Grid>
+            <Grid item xs={12}>
+              <FormControl fullWidth>
+                <InputLabel id="conditionType">Condition Type</InputLabel>
+                <Controller
+                  render={({ field }) => (
+                    <Select {...field}>
+                      <MenuItem value="Symptom">Symptom</MenuItem>
+                      <MenuItem value="MedicalCondition">MedicalCondition</MenuItem>
+                      <MenuItem value="PatientInfo">PatientInfo</MenuItem>
+                    </Select>
+                  )}
+                  name="conditionType"
+                  control={control}
+                />
+              </FormControl>
+
+            </Grid>
+            <Grid item xs={12}>
+
+              <FormControl fullWidth>
+                <InputLabel id="conditionValuesType">Condition Values Type</InputLabel>
+                <Controller
+                  render={({ field }) => (
+                    <Select {...field}>
+                      <MenuItem value="YesNoValues">Yes No Values</MenuItem>
+                      <MenuItem value="NumericIntervalValues">Numeric Interval Values</MenuItem>
+                      <MenuItem value="FixedSetValues">Fixed Set Values</MenuItem>
+                    </Select>
+                  )}
+                  name="conditionValuesType"
+                  control={control}
+                />
+              </FormControl>
+            </Grid>
+
+            <section>
+              <label>MUI Slider</label>
+              <Controller
+                name="values_"
+                control={control}
+                defaultValue={[0, 100]}
+                render={({ field }) => (
+                  <Slider
+                    {...field}
+                    onChange={(_, value) => {
+                      field.onChange(value);
+                    }}
+                    valueLabelDisplay="auto"
+                    max={100}
+                    step={1}
+                  />
+                )}
+              />
+            </section>
             {
               fields.map((field, index) =>
                 <React.Fragment key={field.id}>
                   <Grid item xs={10}>
-                    <CustomInput label='الاجابة' name={`answers.${index}.question`} control={control} errors={errors} />
+                    <CustomInput label='الاجابة' name={`values.${index}.question`} control={control} errors={errors} />
                   </Grid>
-                  {/* <Grid item xs={5}>
-                    <CustomInput label='السكور' name={`answers.${index}.score`} control={control} errors={errors} type="number" />
-                  </Grid> */}
                   <Grid item xs={2}>
                     <Button fullWidth onClick={() => remove(index)}>حذف</Button>
                   </Grid>
