@@ -1,6 +1,8 @@
 import React from "react";
 import { MenuItem, Stack, styled } from "@mui/material";
 import Iconify from "../../components/Iconify";
+import { useMutation, useQueryClient } from "react-query";
+import { deleteRequest } from "../../api/axios";
 
 const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
     color: theme.palette.error.main,
@@ -21,37 +23,56 @@ export const tableColumns = [
         header: "الاجابات",
         accessorKey: "answers",
         enableSorting: false,
-        cell: ({ row }) => <>{row.original.answers.join(", ")}</>
+        cell: ({ row }) => <>{row.original.values?.join(", ")}</>
+    },
+    {
+        header: "نوع الاجابات",
+        accessorKey: "conditionValuesType",
+        enableSorting: false,
+    },
+    {
+        header: "نوع الشرط",
+        accessorKey: "conditionType",
+        enableSorting: false,
     },
     {
         header: "الاجراءات",
         accessorKey: "actions",
-        cell: ({ row }) => (<Stack flexDirection={'row'} >
-            <MenuItem
-            // component={RouterLink}
-            // to={`${id}`}
-            // sx={{ color: "text.secondary" }}
-            >
-                <Iconify icon="mdi:show" width={24} height={24} />
-            </MenuItem>
+        cell: ({ row }) => {
+            const queryClient = useQueryClient();
+            const { mutate: handleRemoveClick, isLoading } = useMutation(() => deleteRequest(`conditions/${row.original._id}`), {
+                onSuccess() {
+                    queryClient.invalidateQueries('conditions');
+                }
+            });
 
-            <MenuItem
-            // component={RouterLink}
-            // to={`${id}/edit`}
-            // sx={{ color: "text.secondary" }}
-            >
+            return (<Stack flexDirection={'row'} >
+                {/* <MenuItem
+                // component={RouterLink}
+                // to={`${id}`}
+                // sx={{ color: "text.secondary" }}
+                >
+                    <Iconify icon="mdi:show" width={24} height={24} />
+                </MenuItem>
 
-                <Iconify icon="eva:edit-fill" width={24} height={24} />
-            </MenuItem>
+                <MenuItem
+                // component={RouterLink}
+                // to={`${id}/edit`}
+                // sx={{ color: "text.secondary" }}
+                >
 
-            <StyledMenuItem onClick={() => setOpenConfirmation(true)}>
-                <Iconify
-                    icon="eva:trash-2-outline"
-                    width={24}
-                    height={24}
-                />
-            </StyledMenuItem>
-        </Stack >),
+                    <Iconify icon="eva:edit-fill" width={24} height={24} />
+                </MenuItem> */}
+
+                <StyledMenuItem onClick={() => handleRemoveClick()}>
+                    <Iconify
+                        icon="eva:trash-2-outline"
+                        width={24}
+                        height={24}
+                    />
+                </StyledMenuItem>
+            </Stack >)
+        },
         enableSorting: false,
     },
 ];

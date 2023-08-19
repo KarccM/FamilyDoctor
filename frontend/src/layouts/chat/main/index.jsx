@@ -16,6 +16,7 @@ const ChatPaper = styled(Paper)(() => ({
   backgroundSize: "cover",
   backgroundRepeat: "no-repeat",
   width: "100%",
+  padding: '20px',
 }))
 
 const SubmitLayout = styled(Box)(({ theme }) => ({
@@ -46,11 +47,9 @@ export default function ChatLayout() {
   const [messages, setMessages] = useState([]);
   const [searchParams, _] = useSearchParams();
   const chatId = searchParams.get('chat')
-  console.log('chatId :>> ', chatId);
   useQuery({
     queryKey: [`chats/${chatId}`, chatId],
     queryFn: () => get(`chats/chat/${chatId}`).then((data) => {
-      // console.log('data :>> ', data?.data?.condition?.question);
       setMessages(prev => [...prev, { type: 'doctor', message: data?.data?.condition?.question }])
     }),
     enabled: chatId !== undefined,
@@ -59,7 +58,8 @@ export default function ChatLayout() {
   const { mutate, isError, isLoading } = useMutation(
     (data) => post(`chats/chat/${chatId}`, data),
     {
-      onSuccess: () => {
+      onSuccess: (data) => {
+        setMessages(prev => [...prev, { type: 'doctor', message: data.data?.condition?.question ?? data.data?.conclusion?.name }])
         reset();
       },
       onError: (error) => {
@@ -70,8 +70,8 @@ export default function ChatLayout() {
 
 
   const onSubmitForm = ({ message }) => {
-    mutate({ user_response: message })
     setMessages(prev => [...prev, { type: 'user', message }])
+    mutate({ user_response: message })
   };
 
   return (
@@ -81,23 +81,22 @@ export default function ChatLayout() {
           <React.Fragment key={message}>
             {
               type === 'doctor' ?
-                <Box textAlign='left'>
+                <Box my={2} textAlign='left'>
                   <StyledChip label={message} />
                 </Box>
                 :
-                <Box textAlign='right'>
+                <Box mt={2} textAlign='right'>
                   <StyledChip label={message} />
                 </Box>
             }
           </React.Fragment>
         )}
-
       </Box>
       <SubmitLayout>
         <form autoComplete="off" noValidate onSubmit={handleSubmit(onSubmitForm)}>
           <Stack flexDirection={'row-reverse'} gap={1}>
             <CustomInput label='الاجابة' name={'message'} control={control} errors={errors} fullWidth />
-            <Button variant="contained" type="submit">
+            <Button variant="contained" type="submit" disabled={isLoading}>
               <Iconify icon="prime:send" />
             </Button>
           </Stack>

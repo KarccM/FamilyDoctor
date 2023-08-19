@@ -19,4 +19,9 @@ function post(url, data) {
 function get(url) {
   return axiosInstance.get(url);
 }
-export { axiosInstance, post, get }
+
+function deleteRequest(url) {
+  return axiosInstance.delete(url);
+}
+
+export { axiosInstance, post, get, deleteRequest }

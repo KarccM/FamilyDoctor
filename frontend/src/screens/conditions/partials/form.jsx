@@ -1,20 +1,18 @@
 import React from "react"
 import CustomInput from "../../../components/form/TextField";
 import SubmitLayout from '../../../components/SubmitLayout';
-import { successWithCustomMessage } from "../../../utils/notifications";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, FormControl, Grid, InputLabel, MenuItem, Select, Slider, Stack } from "@mui/material";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
-import { useMutation, useQuery, useQueryClient } from "react-query";
-import { useParams } from "react-router-dom";
+import { useMutation, useQuery } from "react-query";
+import { useNavigate, useParams } from "react-router-dom";
 import { config } from '../config';
 import * as Yup from "yup";
+import { post } from "../../../api/axios";
 
 export default function Form() {
   const { id } = useParams();
-  // const client = useClient('multipart/form-data');
-  const queryClient = useQueryClient();
-
+  const navigate = useNavigate()
   const schema = Yup.object().shape({
     name: Yup.string().required('field_is_required'),
     question: Yup.string().required('field_is_required'),
@@ -30,6 +28,7 @@ export default function Form() {
     control,
     handleSubmit,
     reset,
+    watch,
     formState: { errors, isDirty },
   } = useForm({
     resolver: yupResolver(schema),
@@ -57,34 +56,27 @@ export default function Form() {
     }
   }, [course]);
 
-  const { mutate, isError, isLoading } = useMutation(
-    (data) =>
-      client(`${id ? `${config.url}/${id}` : `${config.url}`} `, {
-        method: id ? 'PATCH' : 'POST',
-        data,
-      }),
+  const { mutate, isLoading } = useMutation(
+    (data) => post('conditions', data),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(config.queryClientKeys.list);
-        navigate(`${route}`);
+        navigate('/conditions');
         reset();
-        if (id) successWithCustomMessage("updated_success_msg");
-        else successWithCustomMessage("added_success_msg");
       },
       onError: (error) => {
-        setBackendErrors(Array.isArray(error.response.data.message) ? error.response.data.message : [error.response.data.message]);
 
       },
     }
   );
 
-  const onSubmitForm = ({ name, question, values }) => {
-    console.log('values :>> ', values);
-    // mutate({
-    //   name,
-    //   question,
-    //   values,
-    // })
+  const onSubmitForm = ({ name, question, values, conditionType, conditionValuesType }) => {
+    mutate({
+      name,
+      question,
+      conditionType,
+      conditionValuesType,
+      values: conditionValuesType === '' ? values.map(value => ({ [label]: value.range })) : values.map(value => value.answer),
+    })
   };
 
   if (fetchLoading) {
@@ -104,13 +96,13 @@ export default function Form() {
             </Grid>
             <Grid item xs={12}>
               <FormControl fullWidth>
-                <InputLabel id="conditionType">Condition Type</InputLabel>
+                <InputLabel id="conditionType">نوع الشرط</InputLabel>
                 <Controller
                   render={({ field }) => (
                     <Select {...field}>
                       <MenuItem value="Symptom">Symptom</MenuItem>
-                      <MenuItem value="MedicalCondition">MedicalCondition</MenuItem>
-                      <MenuItem value="PatientInfo">PatientInfo</MenuItem>
+                      <MenuItem value="MedicalCondition">Medical Condition</MenuItem>
+                      <MenuItem value="PatientInfo">Patient Info</MenuItem>
                     </Select>
                   )}
                   name="conditionType"
@@ -122,7 +114,7 @@ export default function Form() {
             <Grid item xs={12}>
 
               <FormControl fullWidth>
-                <InputLabel id="conditionValuesType">Condition Values Type</InputLabel>
+                <InputLabel id="conditionValuesType">نوع قيم الشرط</InputLabel>
                 <Controller
                   render={({ field }) => (
                     <Select {...field}>
@@ -136,32 +128,40 @@ export default function Form() {
                 />
               </FormControl>
             </Grid>
-
-            <section>
-              <label>MUI Slider</label>
-              <Controller
-                name="values_"
-                control={control}
-                defaultValue={[0, 100]}
-                render={({ field }) => (
-                  <Slider
-                    {...field}
-                    onChange={(_, value) => {
-                      field.onChange(value);
-                    }}
-                    valueLabelDisplay="auto"
-                    max={100}
-                    step={1}
-                  />
-                )}
-              />
-            </section>
             {
               fields.map((field, index) =>
                 <React.Fragment key={field.id}>
-                  <Grid item xs={10}>
-                    <CustomInput label='الاجابة' name={`values.${index}.question`} control={control} errors={errors} />
-                  </Grid>
+                  {watch('conditionValuesType') !== "NumericIntervalValues"
+                    ? <Grid item xs={10}>
+                      <CustomInput label='الاجابة' name={`values.${index}.answer`} control={control} errors={errors} />
+                    </Grid>
+                    :
+                    <>
+                      <Grid item xs={5}>
+                        <CustomInput label='الصنف' name={`values.${index}.label`} control={control} errors={errors} />
+                      </Grid>
+                      <Grid item xs={5}>
+                        <Controller
+                          name={`values.${index}.range`}
+                          control={control}
+                          defaultValue={[0, 100]}
+                          render={({ field }) => (
+                            <Slider
+                              {...field}
+                              onChange={(_, value) => {
+                                field.onChange(value);
+                              }}
+                              valueLabelDisplay="auto"
+                              max={100}
+                              step={1}
+                            />
+                          )}
+                        />
+                      </Grid>
+
+                    </>
+
+                  }
                   <Grid item xs={2}>
                     <Button fullWidth onClick={() => remove(index)}>حذف</Button>
                   </Grid>
