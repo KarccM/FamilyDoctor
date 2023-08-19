@@ -12,4 +12,7 @@ export class ChatEntity {
     description: 'Context - PQueue of the current chat',
   })
   context: any;
+
+  @ApiPropertyOptional({type: Date, description: ''})
+  createdAt?: Date;
 }
