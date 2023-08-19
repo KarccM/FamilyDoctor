@@ -1,10 +1,10 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
-import { AnswerConditionDto } from "src/conditions/dto/answer-condition.dto";
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { AnswerConditionDto } from 'src/conditions/dto/answer-condition.dto';
 
-export class AnswerChatDto{
-    @ApiProperty({type: String, nullable: false, description: 'User ID'})
-    user_id!: string;
+export class AnswerChatDto {
+  @ApiProperty({ type: String, nullable: false, description: 'User ID' })
+  user_id!: string;
 
-    @ApiPropertyOptional({type: String})
-    user_response: string;
+  @ApiPropertyOptional({ type: String })
+  user_response: string;
 }

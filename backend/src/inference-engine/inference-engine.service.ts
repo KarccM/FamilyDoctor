@@ -11,36 +11,40 @@ import { PQueueFactory } from 'src/shared/helpers/pqueue-factory';
 
 @Injectable()
 export class InferenceEngineService {
-    constructor(
-        private readonly conditionsService: ConditionsService,
-        private readonly conclusisonService: ConclusionService,
-        private readonly nlpService: NlpService
-    ) {}
-    
-    async init() : Promise<PriorityQueue>{
-        let pqueue: PriorityQueue = null;
-        let goals: Goal[] = [];
-        let conclusionsKB: Conclusion[] = [];
-        let conclusions: ConclusionClass[] = [];
-        try {
-            conclusionsKB = await this.conclusisonService.findAll();
-            let pqueue = PQueueFactory(conclusionsKB, null, 'KB')
-            return pqueue;
-        } catch (error) {
-            throw error
-        }
-    }
+  constructor(
+    private readonly conditionsService: ConditionsService,
+    private readonly conclusisonService: ConclusionService,
+    private readonly nlpService: NlpService,
+  ) {}
 
-    async start(id: string){
-        let pqueue: PriorityQueue = await this.init();
-        let res = { condition: pqueue.askQuestion(), context: pqueue, _id: id}
-        return res;
+  async init(): Promise<PriorityQueue> {
+    let pqueue: PriorityQueue = null;
+    let goals: Goal[] = [];
+    let conclusionsKB: Conclusion[] = [];
+    let conclusions: ConclusionClass[] = [];
+    try {
+      conclusionsKB = await this.conclusisonService.findAll();
+      let pqueue = PQueueFactory(conclusionsKB, null, 'KB');
+      return pqueue;
+    } catch (error) {
+      throw error;
     }
+  }
 
-    async processAnswer(condition){}
+  async start(id: string) {
+    let pqueue: PriorityQueue = await this.init();
+    let res = { condition: pqueue.askQuestion(), context: pqueue, _id: id };
+    return res;
+  }
 
-    async initFromHistory(context: PriorityQueue){
-        let pqueue: PriorityQueue = PQueueFactory(context.goals, context.lastQuestion, 'DB')
-        return pqueue;
-    }
+  async processAnswer(condition) {}
+
+  async initFromHistory(context: PriorityQueue) {
+    let pqueue: PriorityQueue = PQueueFactory(
+      context.goals,
+      context.lastQuestion,
+      'DB',
+    );
+    return pqueue;
+  }
 }

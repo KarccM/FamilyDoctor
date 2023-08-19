@@ -4,7 +4,7 @@ import * as mongoose from 'mongoose';
 import { Condition } from 'src/conditions/conditions.schema';
 import { YesNoValues } from 'src/shared/Utils/constants/constants';
 
-export type RuleDocument = HydratedDocument<Rule>
+export type RuleDocument = HydratedDocument<Rule>;
 
 // @Schema({_id: false})
 // export class ConditionValue{
@@ -16,9 +16,9 @@ export type RuleDocument = HydratedDocument<Rule>
 // }
 
 @Schema()
-export class Rule{
-    @Prop({ type: [], required: true })
-    conditions: Condition[];
+export class Rule {
+  @Prop({ type: [], required: true })
+  conditions: Condition[];
 }
 
-export const RuleSchema = SchemaFactory.createForClass(Rule)
+export const RuleSchema = SchemaFactory.createForClass(Rule);

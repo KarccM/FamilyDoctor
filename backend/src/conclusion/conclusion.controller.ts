@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { ConclusionService } from './conclusion.service';
 import { CreateConclusionDto } from './dto/create-conclusion.dto';
 import { UpdateConclusionDto } from './dto/update-conclusion.dto';
@@ -12,7 +20,7 @@ export class ConclusionController {
   @Post()
   async create(@Body() createConclusionDto: CreateConclusionDto) {
     // return this.conclusionService.create(createConclusionDto);
-    return await this.conclusionService.addConclusion(createConclusionDto)
+    return await this.conclusionService.addConclusion(createConclusionDto);
   }
 
   @Get()
@@ -21,7 +29,7 @@ export class ConclusionController {
   }
 
   @Get('/diagnosis')
-  findAllDiagnosis(){
+  findAllDiagnosis() {
     return this.conclusionService.findAllDiagnosis();
   }
 
@@ -31,7 +39,10 @@ export class ConclusionController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateConclusionDto: UpdateConclusionDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateConclusionDto: UpdateConclusionDto,
+  ) {
     return this.conclusionService.update(id, updateConclusionDto);
   }
 

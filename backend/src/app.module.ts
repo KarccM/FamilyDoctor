@@ -13,19 +13,23 @@ import { InferenceEngine } from './inference-engine/inference-engine.module';
 import { NlpModule } from './nlp/nlp.module';
 import { SeederService } from './seeder/seeder.service';
 
-// global uri 
+// global uri
 @Module({
   imports: [
-    ConfigModule.forRoot({isGlobal: true}),
+    ConfigModule.forRoot({ isGlobal: true }),
     CommandModule,
-    MongooseModule.forRoot(process.env.NODE_ENV == 'dev'? process.env.MONGODB_URI_LOCAL : process.env.DATABASE_URI),
+    MongooseModule.forRoot(
+      process.env.NODE_ENV == 'dev'
+        ? process.env.MONGODB_URI_LOCAL
+        : process.env.DATABASE_URI,
+    ),
     ConditionsModule,
     SharedModule,
     RulesModule,
     ConclusionModule,
     ChatsModule,
     InferenceEngine,
-    NlpModule
+    NlpModule,
   ],
   controllers: [AppController],
   providers: [AppService, SeederService],

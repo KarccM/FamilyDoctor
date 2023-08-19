@@ -10,16 +10,18 @@ import { NlpModule } from 'src/nlp/nlp.module';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{
-      name: Chat.name,
-      schema: ChatSchema,
-    }]),
+    MongooseModule.forFeature([
+      {
+        name: Chat.name,
+        schema: ChatSchema,
+      },
+    ]),
     SharedModule,
     InferenceEngine,
     ConditionsModule,
-    NlpModule
+    NlpModule,
   ],
   controllers: [ChatsController],
-  providers: [ChatsService]
+  providers: [ChatsService],
 })
 export class ChatsModule {}

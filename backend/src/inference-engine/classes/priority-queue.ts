@@ -1,48 +1,49 @@
-import { compareFn } from "./conclusion";
-import { Condition } from "./condition";
-import { Goal } from "./goal";
+import { compareFn } from './conclusion';
+import { Condition } from './condition';
+import { Goal } from './goal';
 
 export class PriorityQueue {
-    goals: Goal[]
-    lastQuestion: Condition;
+  goals: Goal[];
+  lastQuestion: Condition;
 
-    constructor(goals: Goal[]) {
-        this.goals = goals;
-        this.sortNodes();
-        this.lastQuestion = null;
-    }
+  constructor(goals: Goal[]) {
+    this.goals = goals;
+    this.sortNodes();
+    this.lastQuestion = null;
+  }
 
-    getHead(n = 1){
-        return this.goals.slice(0,n);
-    }
+  getHead(n = 1) {
+    return this.goals.slice(0, n);
+  }
 
-    sortNodes(){
-        this.goals = this.goals.sort((goalA, goalB)=> {
-            return compareFn(goalA.getScore(), goalB.getScore())})
-    }
+  sortNodes() {
+    this.goals = this.goals.sort((goalA, goalB) => {
+      return compareFn(goalA.getScore(), goalB.getScore());
+    });
+  }
 
-    updateNodes(visitedCondition: Condition){
-        this.goals.forEach(goal => {
-            goal.conclusion.updateRules(visitedCondition);
-        });
-        this.sortNodes();
-    }
+  updateNodes(visitedCondition: Condition) {
+    this.goals.forEach((goal) => {
+      goal.conclusion.updateRules(visitedCondition);
+    });
+    this.sortNodes();
+  }
 
-    getAllNodes(): Goal[]{
-        return this.goals;
-    }
+  getAllNodes(): Goal[] {
+    return this.goals;
+  }
 
-    askQuestion(): Condition{
-        let condition: Condition;
-        let goal: Goal
-        goal = this.getHead()[0];
-        condition = goal.conclusion.topNConditions()[0];
-        this.lastQuestion = condition;
-        return condition;
-    }
+  askQuestion(): Condition {
+    let condition: Condition;
+    let goal: Goal;
+    goal = this.getHead()[0];
+    condition = goal.conclusion.topNConditions()[0];
+    this.lastQuestion = condition;
+    return condition;
+  }
 
-    toString() {
-        this.sortNodes();
-        return `\n[PriorityQueue] with goals: ${this.goals} `
-    }
+  toString() {
+    this.sortNodes();
+    return `\n[PriorityQueue] with goals: ${this.goals} `;
+  }
 }

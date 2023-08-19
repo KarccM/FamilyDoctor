@@ -1,5 +1,3 @@
 export class InferenceEngine {
-  constructor(){
-    
-  }
+  constructor() {}
 }

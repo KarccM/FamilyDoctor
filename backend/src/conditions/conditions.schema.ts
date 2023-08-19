@@ -1,6 +1,9 @@
-import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { HydratedDocument } from "mongoose";
-import { ConditionType, ConditionValuesType } from "src/shared/Utils/constants/enums";
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { HydratedDocument } from 'mongoose';
+import {
+  ConditionType,
+  ConditionValuesType,
+} from 'src/shared/Utils/constants/enums';
 
 export type ConditionDocument = HydratedDocument<Condition>;
 
@@ -40,73 +43,66 @@ export type ConditionDocument = HydratedDocument<Condition>;
 //     values: any[];
 // }
 
-
-
 // @Schema({discriminatorKey: 'conditionType'})
 @Schema()
-export class Condition{
-    _id
-    
-    @Prop({required: true, unique: true})
-    name: string;
+export class Condition {
+  _id;
 
-    @Prop()
-    question: string;
+  @Prop({ required: true, unique: true })
+  name: string;
 
-    @Prop()
-    values: [];
+  @Prop()
+  question: string;
 
-    @Prop({
-        type: String,
-        required: true,
-        enum: ConditionType
-    })
-    conditionType: string;
+  @Prop()
+  values: [];
 
-    @Prop({
-        type: String, 
-        required: true,
-        enum: ConditionValuesType
-    })
-    conditionValuesType: string;
+  @Prop({
+    type: String,
+    required: true,
+    enum: ConditionType,
+  })
+  conditionType: string;
 
-    @Prop({type: String, required: false})
-    value?: string;
+  @Prop({
+    type: String,
+    required: true,
+    enum: ConditionValuesType,
+  })
+  conditionValuesType: string;
+
+  @Prop({ type: String, required: false })
+  value?: string;
 }
 
-export class ConditionTypes{
-    _id
-    
-    @Prop({required: true, unique: true})
-    name: string;
+export class ConditionTypes {
+  _id;
 
-    @Prop()
-    question: string;
+  @Prop({ required: true, unique: true })
+  name: string;
 
-    @Prop()
-    values: [];
+  @Prop()
+  question: string;
 
+  @Prop()
+  values: [];
 
-    @Prop({
-        type: String, 
-        required: true,
-        enum: ConditionValuesType
-    })
-    conditionValuesType: string;
+  @Prop({
+    type: String,
+    required: true,
+    enum: ConditionValuesType,
+  })
+  conditionValuesType: string;
 
-    @Prop({type: String, required: false})
-    value?: string;
-
+  @Prop({ type: String, required: false })
+  value?: string;
 }
 
-
-export const ConditionTypesSchema = SchemaFactory.createForClass(ConditionTypes)
-
+export const ConditionTypesSchema =
+  SchemaFactory.createForClass(ConditionTypes);
 
 // export const MedicalConditionSchema = SchemaFactory.createForClass(MedicalCondition)
 
-
 // export const PatientInfoSchema = SchemaFactory.createForClass(PatientInfo)
-
 
 export const ConditionSchema = SchemaFactory.createForClass(Condition);

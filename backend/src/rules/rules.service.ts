@@ -6,56 +6,65 @@ import { Rule, RuleDocument } from './rule.schema';
 import { Model } from 'mongoose';
 import { ObjectId } from 'mongodb';
 import { ConditionsService } from 'src/conditions/conditions.service';
-import { BadRequestException} from '@nestjs/common/exceptions'
+import { BadRequestException } from '@nestjs/common/exceptions';
 
 @Injectable()
 export class RulesService {
-  constructor(private readonly conditionService: ConditionsService){}
+  constructor(private readonly conditionService: ConditionsService) {}
 
   async create(createRuleDto: CreateRuleDto) {
-    let conditions = []
-    try{
+    let conditions = [];
+    try {
       await Promise.all(
         createRuleDto.conditions.map(async (c) => {
-        const cond = await this.conditionService.findOne(c.condition);
-        // console.log(`In RulesService: ${cond}`)
-        if (cond == null || cond == undefined) throw new BadRequestException(`Condition with id: ${c.condition} Not Found`)
-        if (cond) {
-          cond.value = c.value;
-          conditions.push(cond); 
-          return cond;
-        }
-    }));
-    // console.log(`This is the conditions object  ${conditions}`)
-    conditions.forEach(e => {console.log('this is e', e)})
+          const cond = await this.conditionService.findOne(c.condition);
+          // console.log(`In RulesService: ${cond}`)
+          if (cond == null || cond == undefined)
+            throw new BadRequestException(
+              `Condition with id: ${c.condition} Not Found`,
+            );
+          if (cond) {
+            cond.value = c.value;
+            conditions.push(cond);
+            return cond;
+          }
+        }),
+      );
+      // console.log(`This is the conditions object  ${conditions}`)
+      conditions.forEach((e) => {
+        console.log('this is e', e);
+      });
     } catch (error) {
-      throw error
+      throw error;
     }
     // let rule = new Rule();
     // rule.conditions = conditions;
-    return {conditions: conditions};
+    return { conditions: conditions };
   }
-
 
   async addRule(createRuleDto: CreateRuleDto) {
     try {
-      let conditions = []
+      let conditions = [];
       conditions = await Promise.all(
         createRuleDto.conditions.map(async (c) => {
           let condition = await this.conditionService.findOne(c.condition);
-          if (condition == undefined || condition == null) throw new BadRequestException(`Condition with id: ${c.condition} Not Found`);
-          else{
+          if (condition == undefined || condition == null)
+            throw new BadRequestException(
+              `Condition with id: ${c.condition} Not Found`,
+            );
+          else {
             condition.value = c.value;
             conditions.push(condition);
             return condition;
           }
-        }));
+        }),
+      );
       // console.log(`I am here in addRule ${conditions}`)
       // conditions = conditions.map(c => {return c._id});
-      return {conditions: conditions}
+      return { conditions: conditions };
     } catch (error) {
-      console.error(error)
-      throw(error)
+      console.error(error);
+      throw error;
     }
   }
 
