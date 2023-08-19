@@ -133,4 +133,17 @@ export class ConclusionService {
       throw new BadRequestException(`Conclusion with id: ${id} does not exist`);
     }
   }
+
+  async seedCollection(items) {
+    try {
+      await this.conclusionModel.insertMany(items);
+      console.log(`[SUCCESS] Conclusions Seeding`);
+    } catch (error) {
+      console.log(`[FAIL] Conclusions Seeding with : \n ${error.message}`);
+    }
+  }
+
+  async dropCollection() {
+    await this.conclusionModel.deleteMany();
+  }
 }

@@ -4,7 +4,7 @@ export function compareFn(a, b, order = 'desc') {
   return order === 'desc' ? b - a : a - b;
 }
 
-export abstract class Conclusion {
+export class Conclusion {
   name: string;
   priority: number;
   rules: Rule[];

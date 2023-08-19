@@ -104,4 +104,17 @@ export class ConditionsService {
       throw new BadRequestException(`Condition with id:${id} does not exist`);
     }
   }
+
+  async seedCollection(items) {
+    try {
+      await this.conditionModel.insertMany(items);
+      console.log(`[SUCCESS] Conditions Seeding`);
+    } catch (error) {
+      console.log(`[FAIL] Conditions Seeding with : \n ${error.message}`);
+    }
+  }
+
+  async dropCollection() {
+    await this.conditionModel.deleteMany();
+  }
 }

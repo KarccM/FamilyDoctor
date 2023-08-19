@@ -13,6 +13,6 @@ export class ChatEntity {
   })
   context: any;
 
-  @ApiPropertyOptional({type: Date, description: ''})
+  @ApiPropertyOptional({ type: Date, description: '' })
   createdAt?: Date;
 }

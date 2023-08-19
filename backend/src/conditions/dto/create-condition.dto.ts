@@ -28,5 +28,5 @@ export class CreateConditionDto {
   conditionValuesType: string;
 
   @ApiProperty({ type: [], isArray: true, required: true })
-  values: [];
+  values: any[];
 }
