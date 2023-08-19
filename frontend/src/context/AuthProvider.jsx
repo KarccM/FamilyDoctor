@@ -6,17 +6,25 @@ const AuthContext = createContext()
 
 export default function AuthProvider(props) {
   const [isAuthed, setIsAuthed] = useState(false);
+  let { readFromLocalStorage, writeOnLocalStorage } = useLocalStorage();
+  let userId = readFromLocalStorage('userId');
+  if (!userId) {
+    userId = uuidv4();
+    writeOnLocalStorage('userId', userId);
+  }
+  
   function getUserId() {
-    let { readFromLocalStorage, writeOnLocalStorage } = useLocalStorage();
     let userId = readFromLocalStorage('userId');
     if (!userId) {
       userId = uuidv4();
+      console.log(userId)
       writeOnLocalStorage('userId', userId);
     }
+    console.log('ssssss', userId)
     setIsAuthed(true);
     return userId;
   }
-
+  
   return <AuthContext.Provider value={{
     getUserId,
     isAuthed,
