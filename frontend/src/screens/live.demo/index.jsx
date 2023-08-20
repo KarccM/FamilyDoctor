@@ -13,6 +13,7 @@ const StyledStack = styled(Stack)(({ theme }) => ({
   overflow: 'auto',
   gap: 20,
   margin: '20px auto',
+  flexWrap: 'wrap'
 }));
 
 const style = {
@@ -86,6 +87,7 @@ export default function LiveDemo() {
   return <>
 
     <Container>
+
       <Typography variant="h3" sx={{ marginBottom: 1 }} >
         الدردشة
       </Typography>
@@ -123,7 +125,9 @@ export default function LiveDemo() {
       <Typography variant="h3" sx={{ marginTop: 3 }} >
         صف الاستنتاج
       </Typography>
-      <StyledStack>
+      <StyledStack
+        divider={<Divider orientation="vertical" flexItem />}
+      >
         {conclusions.map(({ conclusion, previouslyTried }) =>
           <Card sx={{ width: 345 }} variant="outlined" key={conclusion.name}
             onClick={() => {
