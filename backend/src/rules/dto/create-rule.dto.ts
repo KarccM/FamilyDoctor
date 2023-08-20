@@ -13,6 +13,7 @@ export class CreateRuleConditionDto {
   })
   value: string;
 }
+//this
 export class CreateRuleDto {
   @ApiProperty({
     type: [CreateRuleConditionDto],

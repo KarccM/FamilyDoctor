@@ -740,6 +740,13 @@ const ItchyEyes = new Symptom(
   YesNoValues,
   ConditionValuesType.YesNoValues,
 );
+
+const Temp = new Symptom(
+  'الحرارة',
+  'كيف تصف حرارتك (درجة الحرارة أو وصف)',
+  [{"مرتفعة": [37.5, 38]}, {"عادية": [35, 37.5]}],
+  ConditionValuesType.YesNoValues,
+);
 export const ConditionsList: Condition[] = [
   Acne,
   Age,
@@ -828,6 +835,7 @@ export const ConditionsList: Condition[] = [
   TahiojEyes,
   TasteLoss,
   TeethDecay,
+  Temp,
   Tinnitus,
   TirenessWhileActive,
   Tremor,
