@@ -1,4 +1,4 @@
-import { Box, Button, Chip, Paper, Stack, styled } from "@mui/material";
+import { Box, Button, Chip, Paper, Stack, Typography, styled } from "@mui/material";
 import Iconify from "../../../components/Iconify";
 import React, { useState } from "react";
 import { useMutation, useQuery } from "react-query";
@@ -10,13 +10,14 @@ import { useSearchParams } from "react-router-dom";
 let imgSrc = `https://r4.wallpaperflare.com/wallpaper/792/639/808/pattern-monochrome-telegram-logo-cats-hd-wallpaper-18d68d4880c0cc48c07ce18e38a244ba.jpg`
 
 const ChatPaper = styled(Paper)(() => ({
-  height: 'calc(89vh - 92px)', position: 'relative',
+  height: 'calc(89vh - 92px)',
+  position: 'relative',
   backgroundImage: `url('${imgSrc}')`,
   backgroundPosition: "center",
   backgroundSize: "cover",
   backgroundRepeat: "no-repeat",
   width: "100%",
-  padding: '20px',
+  paddingTop: '20px',
 }))
 
 const SubmitLayout = styled(Box)(({ theme }) => ({
@@ -29,6 +30,13 @@ const SubmitLayout = styled(Box)(({ theme }) => ({
 
 const StyledChip = styled(Chip)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
+}))
+
+const StyledBox = styled(Box)(({ theme }) => ({
+  backgroundColor: theme.palette.background.paper,
+  width: 'fit-content',
+  padding: 8,
+  borderRadius: '1rem'
 }))
 
 export default function ChatLayout() {
@@ -50,7 +58,7 @@ export default function ChatLayout() {
   useQuery({
     queryKey: [`chats/${chatId}`, chatId],
     queryFn: () => get(`chats/chat/${chatId}`).then((data) => {
-      setMessages(prev => [...prev, { type: 'doctor', message: data?.data?.condition?.question }])
+      setMessages([{ type: 'doctor', message: <StyledChip label={data.data?.condition?.question} /> }])
     }),
     enabled: chatId !== undefined,
   });
@@ -59,7 +67,30 @@ export default function ChatLayout() {
     (data) => post(`chats/chat/${chatId}`, data),
     {
       onSuccess: (data) => {
-        setMessages(prev => [...prev, { type: 'doctor', message: data.data?.condition?.question ?? data.data?.conclusion?.name }])
+        data.data?.conclusion?.name ?
+          setMessages(prev => [...prev, {
+            type: 'doctor', message:
+              <StyledBox>
+                <Typography>
+                  {data.data?.conclusion?.name}
+                </Typography>
+                {data.data?.conclusion?.treatment.length > 0 && <Typography>
+                  طريقة العلاج :
+                  {data.data?.conclusion?.treatment[0]}
+                </Typography>}
+                {data.data?.conclusion?.notes.length > 0 && <ul>
+                  ملاحظات
+                  <li>{data.data?.conclusion?.notes[0]}</li>
+                </ul>}
+              </StyledBox>
+          }])
+          : data.data?.condition?.question ?
+            setMessages(prev => [...prev, {
+              type: 'doctor', message: <StyledChip label={data.data?.condition?.question} />
+            }]) :
+            setMessages(prev => [...prev, {
+              type: 'doctor', message: <StyledChip label="عذرا نحن غير قادرين على مساعدتك يمكنك مراجعة طبيب اسرة حقيقي" />
+            }])
         reset();
       },
       onError: (error) => {
@@ -76,22 +107,28 @@ export default function ChatLayout() {
 
   return (
     <ChatPaper>
-      <Box>
-        {messages?.map(({ message, type }) =>
-          <React.Fragment key={message}>
+      <Stack sx={{
+        height: 'calc(89vh - 123px)',
+        overflow: 'auto',
+        marginX: 2,
+      }} >
+        {messages?.map(({ message, type }, index) => {
+          console.log('message :>> ', message);
+          return <React.Fragment key={index}>
             {
               type === 'doctor' ?
                 <Box my={2} textAlign='left'>
-                  <StyledChip label={message} />
+                  {message}
                 </Box>
                 :
                 <Box mt={2} textAlign='right'>
-                  <StyledChip label={message} />
+                  {message}
                 </Box>
             }
           </React.Fragment>
+        }
         )}
-      </Box>
+      </Stack>
       <SubmitLayout>
         <form autoComplete="off" noValidate onSubmit={handleSubmit(onSubmitForm)}>
           <Stack flexDirection={'row-reverse'} gap={1}>

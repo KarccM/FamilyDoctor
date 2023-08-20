@@ -11,26 +11,30 @@ import { useQuery } from "react-query";
 
 export default function Symptoms({ params, ...rest }) {
   const columns = React.useMemo(() => tableColumns, []);
-  const { data: conditions, isLoading } = useQuery(
-    ['conditions'],
-    () => get('conditions').then(data => data.data),
+  const { data: conclusion, isLoading } = useQuery(
+    ['conclusion'],
+    () => get('conclusion').then(data => data.data),
   );
 
   let table = <Table
     columns={columns}
-    tableData={conditions}
+    tableData={conclusion}
     isLoading={false}
     isToolbar={false}
   />
-  if (isLoading) return <Backdrop
-    sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-    open={isLoading}
-    onClick={() => { }}
-  >
-    <CircularProgress color="inherit" />
-  </Backdrop>
+
+  if (isLoading) return (
+    <Backdrop
+      sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+      open={isLoading}
+      onClick={() => { }}
+    >
+      <CircularProgress color="inherit" />
+    </Backdrop>
+  )
+
   return (
-    <Page title="الاعراض">
+    <Page title="الامراض">
       <Container>
         <Stack
           direction="row"
@@ -39,12 +43,12 @@ export default function Symptoms({ params, ...rest }) {
           mb={1}
         >
           <Typography variant="h4">
-            الاعراض
+            الامراض
           </Typography>
           <Button
             variant="contained"
             component={RouterLink}
-            to={`/conditions/add`}
+            to={`/conclusions/add`}
             startIcon={<Iconify icon="eva:plus-fill" />}
           >
             إنشاء

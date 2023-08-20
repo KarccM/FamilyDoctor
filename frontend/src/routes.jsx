@@ -1,11 +1,18 @@
 import * as React from "react";
 import { Link, createBrowserRouter } from "react-router-dom";
+
+import Dashboard from "./screens";
 import DashboardLayout from "./layouts/dashboard";
+
+import Conditions from "./screens/conditions";
 import AddCondition from "./screens/conditions/add";
 import EditCondition from "./screens/conditions/edit";
-import Dashboard from "./screens";
-import Conditions from "./screens/conditions";
 
+import Conclusions from "./screens/conclusions";
+import AddConclusion from "./screens/conclusions/add";
+import EditConclusion from "./screens/conclusions/edit";
+
+import LiveDemo from "./screens/live.demo";
 
 const useRouter = () => {
     return createBrowserRouter(
@@ -20,39 +27,30 @@ const useRouter = () => {
                 children: [
                     { index: true, element: <Dashboard /> },
                     {
-                        path: "diseases",
+                        path: "conclusions",
                         handle: {
-                            crumb: () => <Link to="/diseases">الامراض</Link>,
+                            crumb: () => <Link to="/conclusions">الامراض</Link>,
                         },
                         children: [
-                            { index: true, element: <>الامراض</> },
+                            { index: true, element: <Conclusions /> },
                             {
                                 path: "add",
-                                element: <>مرض جديد</>,
+                                element: <AddConclusion />,
                                 handle: {
                                     crumb: () => (
-                                        <Link to="/add">مرض جديد</Link>
+                                        <Link to="/add">استنتاج جديد</Link>
                                     ),
                                 },
                             },
                             {
                                 path: ":id/edit",
-                                element: <>تعديل المرض</>,
+                                element: <EditConclusion />,
                                 handle: {
                                     crumb: () => (
-                                        <Link to="/:id/edit">تعديل المرض</Link>
+                                        <Link to="/:id/edit">تعديل الاستنتاج</Link>
                                     ),
                                 },
-                            },
-                            {
-                                path: ':id',
-                                element: <>تفاصيل المرض</>,
-                                handle: {
-                                    crumb: () => (
-                                        <Link to="/:id">تفاصيل المرض</Link>
-                                    ),
-                                },
-                            },
+                            }
                         ],
                     },
                     {
@@ -79,18 +77,18 @@ const useRouter = () => {
                                         <Link to="/:id/edit">تعديل العرض</Link>
                                     ),
                                 },
-                            },
-                            {
-                                path: ':id',
-                                element: <>تفاصيل العرض</>,
-                                handle: {
-                                    crumb: () => (
-                                        <Link to="/:id">تفاصيل العرض</Link>
-                                    ),
-                                },
-                            },
+                            }
                         ],
                     },
+                    {
+                        path: "live-demo",
+                        handle: {
+                            crumb: () => <Link to="/live-demo">Live Demo</Link>
+                        },
+                        children: [
+                            { index: true, element: <LiveDemo /> }
+                        ],
+                    }
                 ],
             },
             {

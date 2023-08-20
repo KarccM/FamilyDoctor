@@ -15,31 +15,27 @@ export const tableColumns = [
         enableSorting: false,
     },
     {
-        header: "السؤال",
-        accessorKey: "question",
+        header: "الاولوية",
+        accessorKey: "priority",
         enableSorting: false,
     },
     {
-        header: "الاجابات",
-        accessorKey: "answers",
+        header: "ملاحظات",
+        accessorKey: "notes",
         enableSorting: false,
-        cell: ({ row }) => <>{typeof row.original.values?.[0] === 'string' ? row.original.values?.join(", ") :
-            row.original.values.map((lol) => Object.entries(lol)[0][0]).join(', ')
-        }</>
+        cell: ({ row }) => <>{row.original.notes?.join(", ")}</>
     },
     {
-        header: "نوع الاجابات",
-        accessorKey: "conditionValuesType",
+        header: "التخصص",
+        accessorKey: "specialist",
         enableSorting: false,
-        cell: ({ row }) => <>{row.original.conditionValuesType === 'NumericIntervalValues' ? 'قيم مجالات' : "قيم ثابتة"}</>
     },
     {
-        header: "نوع الشرط",
-        accessorKey: "conditionType",
+        header: "طريقة التعامل",
+        accessorKey: "treatment",
         enableSorting: false,
-        cell: ({ row }) => <>{row.original.conditionType === 'MedicalCondition' ? 'تاريخ طبي' :
-            row.original.conditionType === 'PatientInfo' ? 'معلومات عن المريض' : 'عرض'
-        }</>
+        cell: ({ row }) => <>{row.original.treatment?.join(", ")}</>
+
     },
     {
         header: "الاجراءات",
@@ -53,6 +49,23 @@ export const tableColumns = [
             });
 
             return (<Stack flexDirection={'row'} >
+                {/* <MenuItem
+                // component={RouterLink}
+                // to={`${id}`}
+                // sx={{ color: "text.secondary" }}
+                >
+                    <Iconify icon="mdi:show" width={24} height={24} />
+                </MenuItem>
+
+                <MenuItem
+                // component={RouterLink}
+                // to={`${id}/edit`}
+                // sx={{ color: "text.secondary" }}
+                >
+
+                    <Iconify icon="eva:edit-fill" width={24} height={24} />
+                </MenuItem> */}
+
                 <StyledMenuItem onClick={() => handleRemoveClick()}>
                     <Iconify
                         icon="eva:trash-2-outline"
