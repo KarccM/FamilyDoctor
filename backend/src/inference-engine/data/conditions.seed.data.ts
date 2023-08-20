@@ -121,7 +121,7 @@ const Fatigue = new Symptom(
 
 const Coughing = new Symptom(
   'السعال',
-  'هل تعاني من العال',
+  'هل تعاني من السعال',
   YesNoValues,
   ConditionValuesType.YesNoValues,
 );
@@ -162,7 +162,7 @@ const stomachBurn = new Symptom(
 );
 
 const EarPain = new Symptom(
-  'آلم في الأذن',
+  'ألم في الأذن',
   'هل تشعر بألم في الأذن',
   YesNoValues,
   ConditionValuesType.YesNoValues,
@@ -190,7 +190,7 @@ const Sweating = new Symptom(
 );
 
 const MusclePain = new Symptom(
-  'آلم العضلات',
+  'ألم العضلات',
   'هل تشعر بآلام في العضلات',
   YesNoValues,
   ConditionValuesType.YesNoValues,
@@ -300,6 +300,21 @@ const StomachCramps = new Symptom(
   YesNoValues,
   ConditionValuesType.YesNoValues,
 );
+
+const IntenstinesCramps = new Symptom(
+  'انزعاج في الأمعاء',
+  'هل تشعر بوجود انزعاج في الأمعاء',
+  YesNoValues,
+  ConditionValuesType.YesNoValues,
+);
+
+const StomachPain = new Symptom(
+  'ألم في المعدة',
+  'هل تشعر بوجود انزعاج في المعدة',
+  YesNoValues,
+  ConditionValuesType.YesNoValues,
+);
+
 
 const Sneezing = new Symptom(
   'العطاس',
@@ -761,7 +776,13 @@ export const ConditionsList: Condition[] = [
   BloodyStool,
   BloodyVomit,
   BlueBruises,
+  BlurryVision,
   BreathShortness,
+  Constipation,
+  Coughing,
+  ColdIntolerance,
+  ConstantThirst,
+  ChestPain,
   DarkUrine,
   Depression,
   Diabeties,
@@ -791,6 +812,7 @@ export const ConditionsList: Condition[] = [
   Irritation,
   Itching,
   ItchyEyes,
+  IntenstinesCramps,
   JointPain,
   LightSensitivity,
   lackOfAppetite,
@@ -829,6 +851,7 @@ export const ConditionsList: Condition[] = [
   StomachCramps,
   StomachEsophagousComeback,
   StuffyNose,
+  StomachPain,
   Sweating,
   Tachycardia,
   TafahJildiJaf,

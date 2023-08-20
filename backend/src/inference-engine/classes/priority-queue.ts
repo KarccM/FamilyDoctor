@@ -20,6 +20,7 @@ export class PriorityQueue {
   }
 
   sortNodes() {
+    this.goals = this.goals.filter(g => !g.previouslyTried);
     this.goals = this.goals.sort((goalA, goalB) => {
       return compareFn(goalA.getScore(), goalB.getScore());
     });
@@ -29,7 +30,7 @@ export class PriorityQueue {
     this.goals.forEach((goal) => {
       goal.conclusion.updateRules(visitedCondition);
       this.gotAConclusion = goal.conclusion.conclusionFired;
-      if (this.gotAConclusion) this.acheivedConcluion = goal.conclusion;
+      if (this.gotAConclusion) {this.acheivedConcluion = goal.conclusion; goal.previouslyTried = true}
     });
     this.sortNodes();
   }
