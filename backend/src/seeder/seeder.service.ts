@@ -24,19 +24,19 @@ export class SeederService {
     log(`THIS IS SO MUCH FUN I LOVE IT!!!!!!!!!!!!!`);
   }
 
-
   @Command({
     command: 'seed:conclusions',
     describe: 'Seeding the Conclusions collection',
   })
   async seedConc() {
     let cList = await Promise.all(
-    ConclusionsList.map(async(conc) => {
-      let rules = null;
-      rules = await Promise.all(
-        conc.rules.map(async (r) => {
-          return await this.rulesService.addRule(r, false)
-        }));
+      ConclusionsList.map(async (conc) => {
+        let rules = null;
+        rules = await Promise.all(
+          conc.rules.map(async (r) => {
+            return await this.rulesService.addRule(r, false);
+          }),
+        );
         let other = conc.conclusion;
         return {
           name: conc.name,
@@ -44,9 +44,10 @@ export class SeederService {
           rules: rules,
           conclusionType: conc.conclusionType,
           ...other,
-        }
-    }));
-    await this.conclusionService.seedCollection(cList)
+        };
+      }),
+    );
+    await this.conclusionService.seedCollection(cList);
   }
 
   @Command({

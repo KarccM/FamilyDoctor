@@ -13,7 +13,9 @@ export class Symptom extends Condition {
     cvTypes: string = ConditionValuesType.YesNoValues,
     user_answer = null,
   ) {
-    if (cvTypes == ConditionValuesType.YesNoValues) {values = YesNoValues};
+    if (cvTypes == ConditionValuesType.YesNoValues) {
+      values = YesNoValues;
+    }
     super(name, question, values, cvTypes, ConditionType.Symptom, user_answer);
   }
 }

@@ -315,7 +315,6 @@ const StomachPain = new Symptom(
   ConditionValuesType.YesNoValues,
 );
 
-
 const Sneezing = new Symptom(
   'العطاس',
   'هل تعاني من العطاس الزائد',
@@ -759,8 +758,8 @@ const ItchyEyes = new Symptom(
 const Temp = new Symptom(
   'الحرارة',
   'كيف تصف حرارتك (درجة الحرارة أو وصف)',
-  [{"مرتفعة": [37.5, 38]}, {"عادية": [35, 37.5]}],
-  ConditionValuesType.YesNoValues,
+  [{ مرتفعة: [37.5, 38] }, { عادية: [35, 37.5] }],
+  ConditionValuesType.NumericIntervalValues,
 );
 export const ConditionsList: Condition[] = [
   Acne,

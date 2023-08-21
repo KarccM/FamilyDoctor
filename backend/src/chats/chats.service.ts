@@ -100,18 +100,26 @@ export class ChatsService {
         ConditionValuesType.NumericIntervalValues
       ) {
         let num_answer = answer.replace(/[^0-9]/g, '');
-        condInstance.values.forEach((v) => {
-          let keylabel = Object.keys(v)[0];
-          if (num_answer > v[keylabel][0] && num_answer < v[keylabel][1]) {
-            label = keylabel;
-          }
-        });
+        if (num_answer != '') {
+          condInstance.values.forEach((v) => {
+            let keylabel = Object.keys(v)[0];
+            if (num_answer >= v[keylabel][0] && num_answer <= v[keylabel][1]) {
+              label = keylabel;
+            }
+          });
+        } else {
+          let labels = condInstance.values.map((i) => {
+            return Object.keys(i)[0];
+          });
+          label = await this.nlpService.process_answer(answer, labels);
+        }
       } else {
         label = await this.nlpService.process_answer(
           answer,
           condInstance.values,
         );
       }
+      console.log('USer Answer is ', label, condInstance.name);
       condInstance.setAnswer(label);
       let pqueue = await this.inferenceEngineService.initFromHistory(context);
       pqueue.updateNodes(condInstance);

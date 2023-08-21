@@ -42,12 +42,14 @@ export class RulesService {
     return { conditions: conditions };
   }
 
-  async addRule(createRuleDto: CreateRuleDto, isIDs=true) {
+  async addRule(createRuleDto: CreateRuleDto, isIDs = true) {
     try {
       let conditions = [];
       conditions = await Promise.all(
         createRuleDto.conditions.map(async (c) => {
-          let condition = isIDs ? await this.conditionService.findOne(c.condition): await this.conditionService.findOneByName(c.condition)
+          let condition = isIDs
+            ? await this.conditionService.findOne(c.condition)
+            : await this.conditionService.findOneByName(c.condition);
           if (condition == undefined || condition == null)
             throw new BadRequestException(
               `Condition with id: ${c.condition} Not Found`,
