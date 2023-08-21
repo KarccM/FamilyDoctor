@@ -1,4 +1,4 @@
-import { Box, Card, CardActionArea, CardContent, CircularProgress, Container, Divider, LinearProgress, Modal, Paper, Stack, Typography, styled, Button, Icon } from '@mui/material';
+import { Box, Card, CardActionArea, CardContent, CircularProgress, Container, Divider, LinearProgress, Modal, Paper, Stack, Typography, styled, Button, Icon, Alert } from '@mui/material';
 import { useState } from "react"
 import { useForm } from "react-hook-form";
 import { useMutation, useQuery } from "react-query";
@@ -13,6 +13,7 @@ const StyledStack = styled(Stack)(({ theme }) => ({
   overflow: 'auto',
   gap: 20,
   margin: '20px auto',
+  flexWrap: 'wrap'
 }));
 
 const style = {
@@ -86,6 +87,25 @@ export default function LiveDemo() {
   return <>
 
     <Container>
+      {acheivedConcluion.name &&
+        <>
+          <Divider />
+          <Alert severity="success">
+            <Typography variant="h4" sx={{ marginBottom: 1 }} >
+              {acheivedConcluion.name}
+            </Typography>
+            {acheivedConcluion?.treatment.length > 0 && <Typography>
+              طريقة العلاج :
+              {acheivedConcluion?.treatment[0]}
+            </Typography>}
+            {acheivedConcluion?.notes.length > 0 && <ul>
+              ملاحظات
+              <li>{acheivedConcluion?.notes[0]}</li>
+            </ul>}
+          </Alert>
+          <Divider />
+        </>
+      }
       <Typography variant="h3" sx={{ marginBottom: 1 }} >
         الدردشة
       </Typography>
@@ -119,11 +139,14 @@ export default function LiveDemo() {
         }
       </Paper>
 
+
       <Divider />
       <Typography variant="h3" sx={{ marginTop: 3 }} >
         صف الاستنتاج
       </Typography>
-      <StyledStack>
+      <StyledStack
+        divider={<Divider orientation="vertical" flexItem />}
+      >
         {conclusions.map(({ conclusion, previouslyTried }) =>
           <Card sx={{ width: 345 }} variant="outlined" key={conclusion.name}
             onClick={() => {

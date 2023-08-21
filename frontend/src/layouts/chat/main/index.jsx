@@ -23,7 +23,7 @@ const ChatPaper = styled(Paper)(() => ({
 const SubmitLayout = styled(Box)(({ theme }) => ({
   width: '100%',
   position: 'absolute',
-  bottom: 0,
+  bottom: -65,
   backgroundColor: theme.palette.background.paper,
   padding: 8
 }))
@@ -67,20 +67,21 @@ export default function ChatLayout() {
     (data) => post(`chats/chat/${chatId}`, data),
     {
       onSuccess: (data) => {
-        data.data?.conclusion?.name ?
+        data.data?.context?.acheivedConcluion?.name ?
           setMessages(prev => [...prev, {
-            type: 'doctor', message:
+            type: 'doctor',
+            message:
               <StyledBox>
                 <Typography>
-                  {data.data?.conclusion?.name}
+                  {data.data?.context?.acheivedConcluion?.name}
                 </Typography>
-                {data.data?.conclusion?.treatment.length > 0 && <Typography>
+                {data.data?.context?.acheivedConcluion?.treatment.length > 0 && <Typography>
                   طريقة العلاج :
-                  {data.data?.conclusion?.treatment[0]}
+                  {data.data?.context?.acheivedConcluion?.treatment[0]}
                 </Typography>}
-                {data.data?.conclusion?.notes.length > 0 && <ul>
+                {data.data?.context?.acheivedConcluion?.notes.length > 0 && <ul>
                   ملاحظات
-                  <li>{data.data?.conclusion?.notes[0]}</li>
+                  <li>{data.data?.context?.acheivedConcluion?.notes[0]}</li>
                 </ul>}
               </StyledBox>
           }])
@@ -101,7 +102,7 @@ export default function ChatLayout() {
 
 
   const onSubmitForm = ({ message }) => {
-    setMessages(prev => [...prev, { type: 'user', message }])
+    setMessages(prev => [...prev, { type: 'user', message: <StyledChip label={message} /> }])
     mutate({ user_response: message })
   };
 
@@ -116,7 +117,7 @@ export default function ChatLayout() {
           console.log('message :>> ', message);
           return <React.Fragment key={index}>
             {
-              type === 'doctor' ?
+              type !== 'doctor' ?
                 <Box my={2} textAlign='left'>
                   {message}
                 </Box>

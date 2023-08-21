@@ -19,6 +19,11 @@ const navConfig = [
         title: 'العرض التجريبي',
         path: 'live-demo',
         icon: getIcon('fluent:live-24-filled')
+    },
+    {
+        title: 'المحادثة',
+        path: '/chats',
+        icon: getIcon('fluent:chat-12-regular'),
     }
 ];
 

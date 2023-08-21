@@ -13,6 +13,7 @@ import AddConclusion from "./screens/conclusions/add";
 import EditConclusion from "./screens/conclusions/edit";
 
 import LiveDemo from "./screens/live.demo";
+import Chats from "./screens/Chats";
 
 const useRouter = () => {
     return createBrowserRouter(
@@ -88,7 +89,17 @@ const useRouter = () => {
                         children: [
                             { index: true, element: <LiveDemo /> }
                         ],
-                    }
+                    },
+                    {
+                        path: "chats",
+                        handle: {
+                            crumb: () => <Link to="/chats">Chats</Link>
+                        },
+                        children: [
+                            { index: true, element: <Chats /> }
+                        ],
+                    },
+
                 ],
             },
             {
