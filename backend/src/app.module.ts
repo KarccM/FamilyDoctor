@@ -12,6 +12,7 @@ import { ChatsModule } from './chats/chats.module';
 import { InferenceEngine } from './inference-engine/inference-engine.module';
 import { NlpModule } from './nlp/nlp.module';
 import { SeederService } from './seeder/seeder.service';
+import { DevtoolsModule } from '@nestjs/devtools-integration'
 
 // global uri
 @Module({
@@ -30,6 +31,7 @@ import { SeederService } from './seeder/seeder.service';
     ChatsModule,
     InferenceEngine,
     NlpModule,
+    DevtoolsModule.register({http: process.env.NODE_ENV == 'dev', port: 8888})
   ],
   controllers: [AppController],
   providers: [AppService, SeederService],
