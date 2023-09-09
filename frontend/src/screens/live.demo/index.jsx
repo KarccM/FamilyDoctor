@@ -51,7 +51,7 @@ export default function LiveDemo() {
 
   const { isFetching: chatLoading, refetch } = useQuery({
     queryKey: [`chats`],
-    queryFn: () => get(`chats/chat/64e1fb8c4b410aa370a97036`).then((data) => {
+    queryFn: () => get(`chats/chat/64e2fac9d489881692c9ac2e`).then((data) => {
       setAcheivedConcluion(data?.data?.context?.acheivedConcluion ?? {});
       setConclusions(data.data?.context?.goals ?? []);
       setMessage(data.data?.condition?.question);
@@ -61,10 +61,11 @@ export default function LiveDemo() {
   });
 
   const { mutate, isLoading } = useMutation(
-    (data) => post(`chats/chat/64e1fb8c4b410aa370a97036`, data),
+    (data) => post(`chats/chat/64e2fac9d489881692c9ac2e`, data),
     {
       onSuccess: (data) => {
         setAcheivedConcluion(data?.data?.context?.acheivedConcluion ?? {});
+        setDetail(data?.data?.context?.acheivedConcluion ?? {})
         setConclusions(data.data?.context?.goals ?? []);
         !data.data?.condition?.question ?
           setMessage("لدينا نتيجة الان")
@@ -182,7 +183,7 @@ export default function LiveDemo() {
         onClick={() => { setOpenDetailsModal(false) }}
       >
         <Box sx={{ ...style }}>
-          <CircularProgress color="inherit" />
+          details
         </Box>
       </Modal>
     </Container>
