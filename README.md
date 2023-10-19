@@ -6,6 +6,9 @@ By: Kareem Habtoor and Mayar Muammar
 Supervised by: Dr. Medhat Alsos (Phd, Head of Artificial Intelligence and Natural Languages Department)
 
 
+Grade: 83/100
+
+
 [kareemhabtoor@gmail.com](kareemhabtoor@gmail.com),
 [mayar.w.muammar@gmail.com](mayar.w.muammar@gmail.com),
 [msoossoos@gmail.com](msoossoos@gmail.com)
